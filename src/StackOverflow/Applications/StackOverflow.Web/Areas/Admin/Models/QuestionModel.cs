@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using StackOverflow.Services;
 using StackOverflow.Services.BusinessObjects;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace StackOverflow.Web.Areas.Admin.Models;
 
@@ -17,7 +16,7 @@ public class QuestionModel : AdminBaseModel
 
     public QuestionModel()
     {
-        
+
     }
 
     public QuestionModel(IQuestionService questionService)
@@ -28,7 +27,7 @@ public class QuestionModel : AdminBaseModel
     public override void ResolveDependency(ILifetimeScope scope)
     {
         _scope = scope;
-        _questionService = _scope.Resolve<IQuestionService>();       
+        _questionService = _scope.Resolve<IQuestionService>();
         base.ResolveDependency(scope);
     }
 

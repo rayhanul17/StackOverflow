@@ -22,6 +22,7 @@ public class QAController : Controller
 
     [HttpGet]
     public IActionResult Ask()
+    
     {
         var model = _scope.Resolve<QuestionModel>();
 
