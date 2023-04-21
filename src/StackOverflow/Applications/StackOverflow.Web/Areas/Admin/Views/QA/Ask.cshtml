@@ -1,0 +1,16 @@
+﻿@model QuestionModel
+
+<form role="form" method="post" asp-antiforgery="true" asp-action="Ask" asp-controller="QA" asp-area="Admin">
+    <div class="card-body">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Title">Question Tittle</label>
+            <input type="text" class="form-control" asp-for="Title" placeholder="Course Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>        
+    </div>
+    <div class="card-footer">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
