@@ -3,7 +3,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 
-namespace StackOverflow.DAL.Utility;
+namespace StackOverflow.Infrastructure.Utility;
 
 internal class MsSqlSessionFactory : IDataSessionFactory
 {

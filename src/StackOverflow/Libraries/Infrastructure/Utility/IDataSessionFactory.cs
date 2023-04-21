@@ -1,6 +1,6 @@
 ﻿using NHibernate;
 
-namespace StackOverflow.DAL.Utility;
+namespace StackOverflow.Infrastructure.Utility;
 
 public interface IDataSessionFactory
 {

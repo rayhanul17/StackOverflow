@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Infrastructure\StackOverflow.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Libraries\StackOverflow.DAL\StackOverflow.DAL.csproj" />
     <ProjectReference Include="..\..\Libraries\StackOverflow.Services\StackOverflow.Services.csproj" />
   </ItemGroup>
 

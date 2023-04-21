@@ -8,9 +8,9 @@ public class ServiceModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
-            .InstancePerLifetimeScope();
         builder.RegisterType<QuestionService>().As<IQuestionService>()
+            .InstancePerLifetimeScope();
+        builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
             .InstancePerLifetimeScope();
         builder.RegisterType<QuestionRepository>().As<IQuestionRepository>()
             .InstancePerLifetimeScope();

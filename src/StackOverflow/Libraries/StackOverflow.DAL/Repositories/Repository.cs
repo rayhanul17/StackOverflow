@@ -58,7 +58,8 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey> whe
 
     public void Add(TEntity entity)
     {
-        _session.SaveAsync(entity);
+        var obj = _session.SaveAsync(entity);
+        var ob = obj;
     }
 
     public void AddOrUpdate(TEntity entity)
