@@ -5,12 +5,12 @@ using StackOverflow.Web.Areas.Admin.Models;
 namespace StackOverflow.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class QAController : Controller
+public class QuestionController : Controller
 {
-    private readonly ILogger<QAController> _logger;
+    private readonly ILogger<QuestionController> _logger;
     private readonly ILifetimeScope _scope;
 
-    public QAController(ILogger<QAController> logger, ILifetimeScope scope)
+    public QuestionController(ILogger<QuestionController> logger, ILifetimeScope scope)
     {
         _logger = logger;
         _scope = scope;

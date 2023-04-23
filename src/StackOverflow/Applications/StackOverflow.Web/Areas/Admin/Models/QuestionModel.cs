@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using StackOverflow.Services;
-using StackOverflow.Services.BusinessObjects;
+using StackOverflow.Services.DTOs;
+using StackOverflow.Services.Services;
 
 namespace StackOverflow.Web.Areas.Admin.Models;
 

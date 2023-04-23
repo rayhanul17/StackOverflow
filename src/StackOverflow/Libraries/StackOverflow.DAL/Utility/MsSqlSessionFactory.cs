@@ -14,7 +14,7 @@ public class MsSqlSessionFactory : IDataSessionFactory
         Session = Fluently
             .Configure()
             .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
-            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<DALAssemblyRefference>())
+            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<MsSqlSessionFactory>())
             .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
             .BuildSessionFactory();
     }

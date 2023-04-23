@@ -11,6 +11,7 @@ public class QuestionMap : ClassMap<Question>
         Id(x => x.Id);
         Map(x => x.Title);
         Map(x => x.VoteCount);
+        Map(x => x.TimeStamp);
         HasMany(x => x.Answers).KeyColumn("QuestionId")
             .Inverse()
             .LazyLoad()

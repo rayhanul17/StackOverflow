@@ -2,7 +2,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using StackOverflow.DAL;
 using StackOverflow.DAL.Utility;
 using StackOverflow.Services;
 using StackOverflow.Web;
@@ -18,7 +17,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterModule(new WebModule());
     containerBuilder.RegisterModule(new ServiceModule());
-    containerBuilder.RegisterModule(new DALModule(connectionString));
 });
 
 //builder.Services.AddScoped<ISeedService, SeedService>();
