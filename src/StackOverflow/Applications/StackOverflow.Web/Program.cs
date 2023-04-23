@@ -2,9 +2,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using NHibernate.AdoNet;
 using StackOverflow.DAL;
-using StackOverflow.Infrastructure;
+using StackOverflow.DAL.Utility;
 using StackOverflow.Services;
 using StackOverflow.Web;
 using StackOverflow.Web.Data;
@@ -19,11 +18,11 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterModule(new WebModule());
     containerBuilder.RegisterModule(new ServiceModule());
-    containerBuilder.RegisterModule(new DALModule());
-    containerBuilder.RegisterModule(new InfrastructureModule(connectionString));
+    containerBuilder.RegisterModule(new DALModule(connectionString));
 });
 
 //builder.Services.AddScoped<ISeedService, SeedService>();
+builder.Services.AddScoped(x => new MsSqlSessionFactory(connectionString).OpenSession());
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

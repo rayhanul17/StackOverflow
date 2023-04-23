@@ -11,7 +11,7 @@ public class QuestionMap : ClassMap<Question>
         Id(x => x.Id);
         Map(x => x.Title);
         Map(x => x.VoteCount);
-        HasMany(x => x.Answers).KeyColumn("AnswerId")
+        HasMany(x => x.Answers).KeyColumn("QuestionId")
             .Inverse()
             .LazyLoad()
             .Cascade.All();

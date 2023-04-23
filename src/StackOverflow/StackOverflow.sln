@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.DAL", "Librar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.Services", "Libraries\StackOverflow.Services\StackOverflow.Services.csproj", "{87D413E5-5F60-4B77-B915-099380B601BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflow.Infrastructure", "Libraries\Infrastructure\StackOverflow.Infrastructure.csproj", "{2A52E9A0-ACF4-4209-B95C-200D874C677E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{87D413E5-5F60-4B77-B915-099380B601BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87D413E5-5F60-4B77-B915-099380B601BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87D413E5-5F60-4B77-B915-099380B601BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A52E9A0-ACF4-4209-B95C-200D874C677E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A52E9A0-ACF4-4209-B95C-200D874C677E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A52E9A0-ACF4-4209-B95C-200D874C677E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A52E9A0-ACF4-4209-B95C-200D874C677E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,7 +39,6 @@ Global
 		{0BB0396C-4463-40FF-BDD2-0996492F4D28} = {1C386541-F864-4EDA-B9D8-EEAA83774813}
 		{7902AD69-E58C-4463-A511-907C44201391} = {8910212D-3701-4183-925F-7611B1FE6F14}
 		{87D413E5-5F60-4B77-B915-099380B601BE} = {8910212D-3701-4183-925F-7611B1FE6F14}
-		{2A52E9A0-ACF4-4209-B95C-200D874C677E} = {8910212D-3701-4183-925F-7611B1FE6F14}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B26D37CA-A05D-4B17-A749-500268A02D7F}

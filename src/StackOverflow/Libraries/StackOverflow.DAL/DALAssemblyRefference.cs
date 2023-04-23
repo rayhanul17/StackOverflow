@@ -1,6 +1,6 @@
 ﻿namespace StackOverflow.DAL;
 
-public class AssemblyRefference
+public class DALAssemblyRefference
 {
 
 }
