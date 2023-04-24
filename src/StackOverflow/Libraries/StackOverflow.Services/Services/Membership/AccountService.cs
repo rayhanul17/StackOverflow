@@ -7,7 +7,7 @@ using NHibernate;
 using StackOverflow.DAL.Entities.Membership;
 using System.Security.Claims;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-using ApplicationUserDto = StackOverflow.Services.DTOs.Membership.AppplicationUser;
+using ApplicationUserDto = StackOverflow.Services.DTOs.Membership.ApplicationUser;
 
 namespace StackOverflow.Services.Services.Membership;
 

@@ -1,6 +1,6 @@
 ﻿namespace StackOverflow.Services.DTOs.Membership;
 
-public class AppplicationUser
+public class ApplicationUser
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = null!;

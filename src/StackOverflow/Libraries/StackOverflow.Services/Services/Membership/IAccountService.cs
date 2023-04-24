@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using StackOverflow.DAL.Entities.Membership;
-using ApplicationUserDto = StackOverflow.Services.DTOs.Membership.AppplicationUser;
+using ApplicationUserDto = StackOverflow.Services.DTOs.Membership.ApplicationUser;
 
 namespace StackOverflow.Services.Services.Membership
 {
