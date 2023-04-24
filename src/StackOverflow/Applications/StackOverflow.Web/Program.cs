@@ -26,14 +26,21 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddScoped<ISeedService, SeedService>();
+
 //builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped(x => new MsSqlSessionFactory(connectionString).OpenSession());
+
 builder.Services.AddIdentity<ApplicationUser, Role>()
     .ExtendConfiguration()
     .AddNHibernateStores(t => t.SetSessionAutoFlush(true))
     .AddUserManager<UserManager>()
     .AddSignInManager<SignInManager>()
     .AddDefaultTokenProviders();
+
+var seedService = builder.Services.BuildServiceProvider()
+    .GetService<ISeedService>();
+seedService!.Seeds();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -71,7 +78,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddControllersWithViews();
 
-builder.Logging.ClearProviders();
+//builder.Logging.ClearProviders();
 builder.Logging.AddLog4Net();
 
 var log = LogManager.GetLogger(typeof(Program));
@@ -82,11 +89,7 @@ try
     log.Info("Application Starting up");
 
     // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseMigrationsEndPoint();
-    }
-    else
+    if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Home/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.

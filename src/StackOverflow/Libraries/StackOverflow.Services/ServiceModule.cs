@@ -36,6 +36,9 @@ public class ServiceModule : Module
         builder.RegisterType<ActionContextAccessor>().As<IActionContextAccessor>()
             .SingleInstance();
 
+        builder.RegisterType<SeedService>().As<ISeedService>()
+                .InstancePerLifetimeScope();
+
         base.Load(builder);
     }
 }
