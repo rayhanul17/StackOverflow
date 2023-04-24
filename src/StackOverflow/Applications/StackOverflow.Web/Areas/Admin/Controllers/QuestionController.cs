@@ -17,13 +17,14 @@ public class QuestionController : Controller
     }
     public IActionResult Index()
     {
+        
         return View();
     }
 
     [HttpGet]
-    public IActionResult Ask()
-    
-    {
+    public IActionResult Ask()    
+    {       
+        _logger.LogInformation("You are in Admin/Ask\n");
         var model = _scope.Resolve<QuestionModel>();
 
         return View(model);
@@ -42,7 +43,7 @@ public class QuestionController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message);
+            _logger.LogError($"Exception Message: {ex.Message}\nException: {ex}\n\n");
         }
 
         return View(model);
