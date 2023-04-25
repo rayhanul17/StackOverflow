@@ -1,0 +1,50 @@
+﻿@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+<section class="p-2 bg-light" style="min-height:90vh">
+    <div class="container">
+        <div class="card shadow mx-auto" style="max-width:400px; margin-top:40px;">
+            <div class="card-body">
+                <h4 class="card-title mb-6">Sign up</h4>
+                <form id="registerForm" asp-action="Register" method="post" asp-antiforgery="true">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" autocomplete="First name" aria-required="true" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" autocomplete="Last name" aria-required="true" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Email"></label>
+                        <input type="email" class="form-control" asp-for="Email" placeholder="">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Password"></label>
+                        <input class="form-control" asp-for="Password" type="password">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div> <!-- col end.// -->
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ConfirmPassword"></label>
+                        <input class="form-control" asp-for="ConfirmPassword" type="password">
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div> <!-- col end.// -->
+                    <button id="registerSubmit" type="submit" class="btn btn-lg btn-primary w-100">Register</button>
+                </form>
+                <hr>
+                <p class="text-center">Already have account? <a asp-action="Login">Sign in</a></p>
+
+            </div> <!-- card-body.// -->
+        </div> <!-- card .// -->
+        <br /><br />
+    </div> <!-- container .//  -->
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

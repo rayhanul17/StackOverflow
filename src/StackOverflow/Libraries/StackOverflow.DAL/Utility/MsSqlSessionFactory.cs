@@ -2,6 +2,7 @@
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
+using StackOverflow.DAL.Mappings;
 
 namespace StackOverflow.DAL.Utility;
 
