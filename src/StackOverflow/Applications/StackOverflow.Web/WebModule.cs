@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using StackOverflow.Services.Services.Membership;
 using StackOverflow.Web.Areas.Admin.Models;
 using StackOverflow.Web.Models;
 
@@ -13,6 +12,7 @@ public class WebModule : Module
         builder.RegisterType<RegisterModel>().AsSelf();
         builder.RegisterType<LogoutModel>().AsSelf();
         builder.RegisterType<QuestionModel>().AsSelf();
+        builder.RegisterType<GetQuestionsModel>().AsSelf();
 
         base.Load(builder);
     }
