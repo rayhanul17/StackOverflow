@@ -38,7 +38,7 @@ public class QuestionEditModel : AdminBaseModel
         base.ResolveDependency(scope);
     }
 
-    public async void GetQuestion(Guid id)
+    public async Task GetQuestion(Guid id)
     {
         var question = await _questionService.GetByIdAsync(id);
 

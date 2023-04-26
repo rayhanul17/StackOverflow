@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="~/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 }
 <div>
-   <div>@question?.Title</div>
-   <div>@question?.TimeStamp</div>
-   <div>@question?.VoteCount</div>
+   <form>
+       <input asp-for="Id" />
+   </form>
 </div>
 <div class="row">
     <div class="col-12">
@@ -64,7 +64,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "/admin/answer/getanswers",
+                    "url": "/admin/answer/getanswers"                    
                 },
                 "columnDefs": [
                     {

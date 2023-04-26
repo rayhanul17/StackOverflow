@@ -28,7 +28,7 @@ public class AnswerController : Controller
 
     [HttpGet, AllowAnonymous]
     public async Task<JsonResult> GetAnswers()
-    {
+    {        
         var dataTableModel = new DataTablesAjaxRequestModel(Request);
         var model = _scope.Resolve<GetAnswersModel>();
 

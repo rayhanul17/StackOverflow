@@ -203,13 +203,14 @@ public class QuestionController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Details(Guid id)
+    public async Task<IActionResult> Details(Guid id)
     {
+        var s = Request.Path;
         var model = _scope.Resolve<QuestionEditModel>();
 
         try
         {
-            model.GetQuestion(id);
+            await model.GetQuestion(id);
         }
         catch (CustomException ex)
         {
