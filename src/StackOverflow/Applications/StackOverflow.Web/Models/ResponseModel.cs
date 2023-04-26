@@ -4,6 +4,7 @@ public enum ResponseTypes
 {
     Success,
     Danger,
+    Warning
 }
 
 public class ResponseModel

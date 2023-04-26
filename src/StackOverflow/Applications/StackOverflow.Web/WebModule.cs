@@ -14,6 +14,7 @@ public class WebModule : Module
         builder.RegisterType<QuestionModel>().AsSelf();
         builder.RegisterType<AnswerModel>().AsSelf();
         builder.RegisterType<GetQuestionsModel>().AsSelf();
+        builder.RegisterType<QuestionEditModel>().AsSelf();
 
         base.Load(builder);
     }

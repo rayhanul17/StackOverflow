@@ -11,7 +11,6 @@ public class QuestionModel : AdminBaseModel
     public string Title { get; set; } = string.Empty;
     public int VoteCount { get; set; }
     public DateTime TimeStamp { get; set; }
-    public List<AnswerModel>? Answers { get; set; }
 
     private IQuestionService _questionService;
     private ILifetimeScope _scope;
