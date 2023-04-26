@@ -115,16 +115,7 @@ public class AccountController : BaseController<AccountController>
                 var result = await model.PasswordSignInAsync();
                 if (result.Succeeded)
                 {
-                    var roles = await model.GetCurrentUserRolesAsync();
-                    if (roles.Contains("Admin"))
-                    {
-                        return RedirectToAction("Index", "Home");
-                        //return RedirectToAction("Index", "Dashboard", new { Area = "admin" });
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Question", new { Area = "Admin" });                    
                 }
                 else
                 {
@@ -156,6 +147,7 @@ public class AccountController : BaseController<AccountController>
             ViewResponse(ex.Message, ResponseTypes.Danger);
             _logger.LogError(ex, ex.Message);
         }
-        return RedirectToAction(nameof(Login));
+
+        return RedirectToAction("Login");
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using StackOverflow.Services.DTOs;
 using StackOverflow.Services.DTOs.Membership;
+using StackOverflow.Web.Areas.Admin.Models;
 using StackOverflow.Web.Models;
 
 namespace StackOverflow.Web.Profiles;
@@ -19,5 +21,7 @@ public class WebProfile : Profile
             });
 
         CreateMap<ApplicationUser, LoginModel>().ReverseMap();       
+        CreateMap<Question, GetQuestionsModel>().ReverseMap();       
+        CreateMap<Answer, AnswerModel>().ReverseMap();       
     }
 }

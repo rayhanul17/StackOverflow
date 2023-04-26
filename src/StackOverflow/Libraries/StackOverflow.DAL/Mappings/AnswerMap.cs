@@ -12,7 +12,7 @@ public class AnswerMap : ClassMap<Answer>
         Map(x => x.Description);
         Map(x => x.VoteCount);
         Map(x => x.TimeStamp);
-        References(x => x.Question).Columns("QuestionId").LazyLoad();
-
+        Map(x => x.QuestionId);
+        Map(x => x.OwnerId);
     }
 }

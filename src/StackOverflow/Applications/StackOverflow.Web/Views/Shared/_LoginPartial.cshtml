@@ -5,29 +5,19 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-   
-    <a asp-action="Index" asp-controller="Enrollment" class="dropdown-item fs-6">
-        <div class="d-flex align-items-center account-option">
-            <i class="fa fa-shopping-cart"></i>
-            <span class="ms-3">My Courses</span>
-        </div>
-    </a>
-    <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout"
-      asp-route-returnUrl="@Url.Action("Logout", "Account", new { area = "" })">
-        <button type="submit" class="dropdown-item fs-6">
-            <div class="d-flex align-items-center account-option">
-                <i class="fas fa-sign-out-alt"></i>
-                <span class="ms-3">Logout</span>
-            </div>
-        </button>
-    </form>
+    <li class="nav-item">
+        <a asp-area="" asp-controller="Account" asp-action="Logout"                 class="nav-link">
+            <i class="nav-icon fas fa-th"></i>                    
+                Logout
+        </a>
+    </li>
 }
 else
 {
-    <a asp-area="" asp-controller="Account" asp-action="Login" class="dropdown-item fs-6">
-        <div class="d-flex align-items-center account-option">
-            <i class="fa fa-user"></i>
-            <span class="ms-3">Login</span>
-        </div>
-    </a>
+    <li class="nav-item">
+        <a asp-action="Login" asp-controller="Account" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+                Login
+        </a>
+    </li>
 }

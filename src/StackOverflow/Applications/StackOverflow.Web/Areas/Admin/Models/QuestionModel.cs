@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using StackOverflow.Services.DTOs;
 using StackOverflow.Services.Services;
 
@@ -9,6 +10,7 @@ public class QuestionModel : AdminBaseModel
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public int VoteCount { get; set; }
+    public DateTime TimeStamp { get; set; }
     public List<AnswerModel>? Answers { get; set; }
 
     private IQuestionService _questionService;
@@ -31,7 +33,7 @@ public class QuestionModel : AdminBaseModel
         base.ResolveDependency(scope);
     }
 
-    public void Ask()
+    public async Task Ask()
     {
         Question question = new Question
         {
@@ -39,6 +41,11 @@ public class QuestionModel : AdminBaseModel
             VoteCount = VoteCount
         };
 
-        _questionService.AddAsync(question);
+        await _questionService.AddAsync(question);
+    }
+
+    public async Task Delete(Guid id)
+    {
+        await _questionService.DeleteAsync(id);    
     }
 }
