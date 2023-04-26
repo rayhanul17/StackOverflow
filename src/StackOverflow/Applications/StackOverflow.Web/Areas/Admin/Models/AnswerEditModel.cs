@@ -13,6 +13,7 @@ public class AnswerEditModel : AdminBaseModel
     public int VoteCount { get; set; }
     public Guid OwnerId { get; set; }
     public DateTime TimeStamp { get; set; }
+    public bool IsApproved { get; set; }
 
 
     private IAnswerService _answerService;
@@ -40,11 +41,11 @@ public class AnswerEditModel : AdminBaseModel
 
     public async void GetAnswer(Guid id)
     {
-        var question = await _answerService.GetByIdAsync(id);
+        var answer = await _answerService.GetByIdAsync(id);
 
-        if (question != null)
+        if (answer != null)
         {
-            _mapper.Map(question, this);
+            _mapper.Map(answer, this);
         }
     }
 

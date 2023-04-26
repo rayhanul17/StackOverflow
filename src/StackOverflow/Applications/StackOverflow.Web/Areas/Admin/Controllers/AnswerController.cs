@@ -176,7 +176,7 @@ public class AnswerController : Controller
                 Type = ResponseTypes.Success
             });
 
-            return RedirectToAction("Index");
+            return RedirectToAction("GetAnswers");
         }
 
         catch (CustomException ioe)
@@ -200,7 +200,7 @@ public class AnswerController : Controller
             });
         }
 
-        return RedirectToAction("Index");
+        return RedirectToAction("GetAnswers");
     }
 
     public IActionResult Details()

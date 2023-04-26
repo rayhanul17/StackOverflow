@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
+@model QuestionEditModel
 
 @{
     ViewData["Title"] = "QA";
+    var question = TempData["Student"] as QuestionEditModel;
 }
 
 @section Styles
@@ -10,7 +12,11 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="~/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 }
-
+<div>
+   <div>@question?.Title</div>
+   <div>@question?.TimeStamp</div>
+   <div>@question?.VoteCount</div>
+</div>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -65,12 +71,12 @@
                         "orderable": false,
                         "targets": 3,
                         "render": function (data, type, row) {
-                            return `<button type="submit" class="btn btn-primary btn-sm" onclick="window.location.href='/admin/question/edit/${data}'" value='${data}'>
+                            return `<button type="submit" class="btn btn-primary btn-sm" onclick="window.location.href='/admin/answer/edit/${data}'" value='${data}'>
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
                                                 Edit
                                             </button>
-                                            <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/question/details/${data}'" value='${data}'>
+                                            <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/answer/details/${data}'" value='${data}'>
                                                 <i class="fas fa-info">
                                                 </i>
                                                 Details
@@ -90,7 +96,7 @@
                 var modal = $("#modal-default");
                 modal.find('.modal-body p').text('Are you sure you want to delete this question?');
                 $("#deleteId").val(id);
-                $("#deleteForm").attr("action", "/admin/question/delete");
+                $("#deleteForm").attr("action", "/admin/answer/delete");
                 modal.modal('show');
             });
 

@@ -20,10 +20,14 @@ public class WebProfile : Profile
                 Password = x.Password
             });
 
-        CreateMap<ApplicationUser, LoginModel>().ReverseMap();       
+        CreateMap<ApplicationUser, LoginModel>().ReverseMap(); 
+        
+        CreateMap<Question, QuestionModel>().ReverseMap();       
         CreateMap<Question, GetQuestionsModel>().ReverseMap();       
-        CreateMap<Question, QuestionEditModel>().ReverseMap();       
+        CreateMap<Question, QuestionEditModel>().ReverseMap();
+        
         CreateMap<Answer, AnswerModel>().ReverseMap();       
         CreateMap<Answer, GetAnswersModel>().ReverseMap();       
+        CreateMap<Answer, AnswerEditModel>().ReverseMap();       
     }
 }

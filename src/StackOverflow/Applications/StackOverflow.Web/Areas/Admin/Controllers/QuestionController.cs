@@ -203,9 +203,24 @@ public class QuestionController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Details()
+    public IActionResult Details(Guid id)
     {
-        return View();
+        var model = _scope.Resolve<QuestionEditModel>();
+
+        try
+        {
+            model.GetQuestion(id);
+        }
+        catch (CustomException ex)
+        {
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ex.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+
+        return View(model);
     }
 
 }
