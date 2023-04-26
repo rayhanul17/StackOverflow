@@ -6,5 +6,6 @@ public class Answer
     public string Description { get; set; } = string.Empty;
     public int VoteCount { get; set; }
     public DateTime TimeStamp { get; set; }
+    public bool IsApproved { get; set; }
 
 }

@@ -6,41 +6,41 @@ using StackOverflow.Services.Services;
 
 namespace StackOverflow.Web.Areas.Admin.Models;
 
-public class QuestionEditModel : AdminBaseModel
+public class AnswerEditModel : AdminBaseModel
 {
     public Guid Id { get; set; }
-    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public int VoteCount { get; set; }
     public Guid OwnerId { get; set; }
     public DateTime TimeStamp { get; set; }
-    public List<AnswerModel>? Answers { get; set; }
 
-    private IQuestionService _questionService;
+
+    private IAnswerService _answerService;
     private ILifetimeScope _scope;
     private IMapper _mapper;
 
-    public QuestionEditModel()
+    public AnswerEditModel()
     {
 
     }
 
-    public QuestionEditModel(IQuestionService questionService, IMapper mapper)
+    public AnswerEditModel(IAnswerService answerService, IMapper mapper)
     {
-        _questionService = questionService;
+        _answerService = answerService;
         _mapper = mapper;
     }
 
     public override void ResolveDependency(ILifetimeScope scope)
     {
         _scope = scope;
-        _questionService = _scope.Resolve<IQuestionService>();
+        _answerService = _scope.Resolve<IAnswerService>();
         _mapper = _scope.Resolve<IMapper>();
         base.ResolveDependency(scope);
     }
 
-    public async void GetQuestion(Guid id)
+    public async void GetAnswer(Guid id)
     {
-        var question = await _questionService.GetByIdAsync(id);
+        var question = await _answerService.GetByIdAsync(id);
 
         if (question != null)
         {
@@ -48,9 +48,9 @@ public class QuestionEditModel : AdminBaseModel
         }
     }
 
-    public async Task UpdateQuestionAsync()
+    public async Task UpdateAnswerAsync()
     { 
-        var question = _mapper.Map<Question>(this);
-        await _questionService.UpdateAsync(question);
+        var answer = _mapper.Map<Answer>(this);
+        await _answerService.UpdateAsync(answer);
     }
 }

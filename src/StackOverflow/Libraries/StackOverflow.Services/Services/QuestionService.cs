@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentNHibernate.Data;
 using Microsoft.AspNetCore.Http;
 using StackOverflow.DAL.UnitOfWorks;
 using StackOverflow.Services.Exceptions;
@@ -41,6 +42,7 @@ public class QuestionService : IQuestionService
 
         var questionEO = _mapper.Map<QuestionEO>(question);
         questionEO.OwnerId = Guid.Parse(_accountService.GetUserId());
+        questionEO.TimeStamp = _timeService.Now;
 
         _unitOfWork.QuestionRepository.Add(questionEO);
         _unitOfWork.SaveChanges();
@@ -106,5 +108,4 @@ public class QuestionService : IQuestionService
         var questions = result.data.Select(x => _mapper.Map<QuestionDto>(x)).ToList();
         return (result.total, result.totalDisplay, questions);
     }
-
 }

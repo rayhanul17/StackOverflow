@@ -129,7 +129,7 @@ public class QuestionController : Controller
 
             try
             {
-                await model.UpdateCourseAsync();
+                await model.UpdateQuestionAsync();
 
                 TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
                 {

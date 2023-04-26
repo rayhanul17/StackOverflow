@@ -24,5 +24,6 @@ public class WebProfile : Profile
         CreateMap<Question, GetQuestionsModel>().ReverseMap();       
         CreateMap<Question, QuestionEditModel>().ReverseMap();       
         CreateMap<Answer, AnswerModel>().ReverseMap();       
+        CreateMap<Answer, GetAnswersModel>().ReverseMap();       
     }
 }
