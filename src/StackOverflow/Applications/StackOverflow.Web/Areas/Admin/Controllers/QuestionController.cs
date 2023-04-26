@@ -7,7 +7,7 @@ using StackOverflow.Web.Models;
 
 namespace StackOverflow.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
+[Area("Admin"), Authorize]
 public class QuestionController : Controller
 {
     private readonly ILogger<QuestionController> _logger;
@@ -18,12 +18,14 @@ public class QuestionController : Controller
         _logger = logger;
         _scope = scope;
     }
+
+    [AllowAnonymous]
     public IActionResult Index()
     {
         return View();
     }
 
-    [HttpGet]
+    [HttpGet, AllowAnonymous]
     public async Task<JsonResult> GetQuestions()
     {
         var dataTableModel = new DataTablesAjaxRequestModel(Request);

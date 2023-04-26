@@ -123,7 +123,7 @@ public class AccountController : BaseController<AccountController>
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Question", new { Area = "Admin" }); ;
+                        return RedirectToAction("Index", "Question", new { Area = "Admin" });
                     }
                 }
                 else
@@ -156,6 +156,7 @@ public class AccountController : BaseController<AccountController>
             ViewResponse(ex.Message, ResponseTypes.Danger);
             _logger.LogError(ex, ex.Message);
         }
+
         return RedirectToAction("Login");
     }
 }
