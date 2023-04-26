@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StackOverflow.Services.Exceptions;
 using StackOverflow.Web.Areas.Admin.Models;
 using StackOverflow.Web.Extensions;
 using StackOverflow.Web.Models;
@@ -43,19 +44,57 @@ public class QuestionController : Controller
     }
 
     [HttpPost]
-    public IActionResult Ask(QuestionModel model)
+    public async Task<IActionResult> Ask(QuestionModel model)
     {
-        try
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            try
             {
                 model.ResolveDependency(_scope);
-                model.Ask();
+                await model.Ask();
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "Successfully added a new questions.",
+                    Type = ResponseTypes.Success
+                });
+            }
+            catch (CustomException ioe)
+            {
+                _logger.LogError(ioe, ioe.Message);
+                ModelState.AddModelError("", ioe.Message);
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = ioe.Message,
+                    Type = ResponseTypes.Warning
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "There was a problem in creating course.",
+                    Type = ResponseTypes.Danger
+                });
             }
         }
-        catch (Exception ex)
+        else
         {
-            _logger.LogError($"Exception Message: {ex.Message}\nException: {ex}\n\n");
+            string messageText = string.Empty;
+            foreach (var message in ModelState.Values)
+            {
+                for (int i = 0; i < message.Errors.Count; i++)
+                {
+                    messageText += message.Errors[i].ErrorMessage;
+                }
+            }
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = messageText,
+                Type = ResponseTypes.Danger
+            });
         }
 
         return RedirectToAction("Index");
@@ -63,21 +102,91 @@ public class QuestionController : Controller
 
     public IActionResult Edit(Guid id)
     {
-        //var model = _scope.Resolve<EditCourseModel>();
-        //model.GetCourse(id);
-        return View();
+        var model = _scope.Resolve<QuestionEditModel>();
+
+        try
+        {
+            model.GetQuestion(id);
+        }
+        catch(CustomException  ex)
+        {
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ex.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+
+        return View(model);
     }
-    public IActionResult Delete(Guid id)
+
+    [ValidateAntiForgeryToken, HttpPost]
+    public async Task<IActionResult> Edit(QuestionEditModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            model.ResolveDependency(_scope);
+
+            try
+            {
+                await model.UpdateCourseAsync();
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "Successfully updated question.",
+                    Type = ResponseTypes.Success
+                });
+
+                return RedirectToAction("Index");
+            }
+            catch (CustomException ioe)
+            {
+                _logger.LogError(ioe, ioe.Message);
+                ModelState.AddModelError("", ioe.Message);
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = ioe.Message,
+                    Type = ResponseTypes.Warning
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "There was a problem in updating question.",
+                    Type = ResponseTypes.Danger
+                });
+            }
+        }
+
+        return View(model);
+    }
+    public async Task<IActionResult> Delete(Guid id)
     {
         try
         {
             var model = _scope.Resolve<QuestionModel>();
-            model.Delete(id);
+            await model.DeleteAsync(id);
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Successfully Deleted Course",
+                Message = "Successfully deleted question.",
                 Type = ResponseTypes.Success
+            });
+
+            return RedirectToAction("Index");
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
             });
         }
         catch (Exception ex)
@@ -86,7 +195,7 @@ public class QuestionController : Controller
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Failed to Delete Course",
+                Message = "Failed to Delete Question",
                 Type = ResponseTypes.Danger
             });
         }

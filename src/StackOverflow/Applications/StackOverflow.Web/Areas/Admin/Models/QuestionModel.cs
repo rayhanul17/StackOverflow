@@ -8,10 +8,7 @@ namespace StackOverflow.Web.Areas.Admin.Models;
 public class QuestionModel : AdminBaseModel
 {
     public Guid Id { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public int VoteCount { get; set; }
-    public DateTime TimeStamp { get; set; }
-    public List<AnswerModel>? Answers { get; set; }
+    public string Title { get; set; } = string.Empty;   
 
     private IQuestionService _questionService;
     private ILifetimeScope _scope;
@@ -37,15 +34,14 @@ public class QuestionModel : AdminBaseModel
     {
         Question question = new Question
         {
-            Title = Title,
-            VoteCount = VoteCount
+            Title = Title,            
         };
 
         await _questionService.AddAsync(question);
     }
 
-    public async Task Delete(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        await _questionService.DeleteAsync(id);    
+        await _questionService.RemoveByIdAsync(id);    
     }
 }
