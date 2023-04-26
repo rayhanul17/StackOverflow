@@ -14,10 +14,12 @@
         </a>
     </li>
     <li class="nav-item">
-        <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
-            Logout
-        </a>
+        <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" }) class="nav-link">
+            <button type="submit">
+                <i class="nav-icon fas fa-th"></i>
+                Logout
+            </button>
+        </form>
     </li>
 }
 else
