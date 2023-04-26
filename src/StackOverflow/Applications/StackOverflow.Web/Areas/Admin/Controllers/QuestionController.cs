@@ -56,7 +56,7 @@ public class QuestionController : Controller
             _logger.LogError($"Exception Message: {ex.Message}\nException: {ex}\n\n");
         }
 
-        return View(model);
+        return RedirectToAction("Index");
     }
 
     public IActionResult Edit(Guid id)
