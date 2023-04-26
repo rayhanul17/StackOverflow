@@ -115,16 +115,7 @@ public class AccountController : BaseController<AccountController>
                 var result = await model.PasswordSignInAsync();
                 if (result.Succeeded)
                 {
-                    var roles = await model.GetCurrentUserRolesAsync();
-                    if (roles.Contains("Admin"))
-                    {
-                        return RedirectToAction("Index", "Question", new { Area = "Admin" });
-                        //return RedirectToAction("Index", "Dashboard", new { Area = "admin" });
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Question", new { Area = "Admin" });
-                    }
+                    return RedirectToAction("Index", "Question", new { Area = "Admin" });                    
                 }
                 else
                 {
