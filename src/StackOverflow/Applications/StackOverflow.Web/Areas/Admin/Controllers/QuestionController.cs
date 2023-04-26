@@ -92,23 +92,9 @@ public class QuestionController : Controller
         return RedirectToAction("Index");
     }
 
-    //[HttpPost]
-    //[ValidateAntiForgeryToken]
+    public IActionResult Details()
+    {
+        return View();
+    }
 
-    //public IActionResult Delete(Guid id)
-    //{
-    //    try
-    //    {
-    //        var model = _scope.Resolve<DeleteCourseModel>();
-    //        model.DeleteCourse(id);
-
-    //        ViewResponse("Category successfully deleted.", ResponseTypes.Success);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        _logger.LogError(ex, ex.Message);
-    //        ViewResponse(ex.Message, ResponseTypes.Danger);
-    //    }
-    //    return RedirectToAction("Index", "Course", new { Area = "Admin" });
-    //}
 }

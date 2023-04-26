@@ -156,6 +156,6 @@ public class AccountController : BaseController<AccountController>
             ViewResponse(ex.Message, ResponseTypes.Danger);
             _logger.LogError(ex, ex.Message);
         }
-        return RedirectToAction(nameof(Login));
+        return RedirectToAction("Login");
     }
 }
