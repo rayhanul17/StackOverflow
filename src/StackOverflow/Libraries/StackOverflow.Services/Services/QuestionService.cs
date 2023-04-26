@@ -72,6 +72,9 @@ public class QuestionService : IQuestionService
             throw new InvalidOperationException("Question already exists");
 
         var questionEO = _mapper.Map<QuestionEO>(obj);
+
+        if (questionEO.OwnerId != Guid.Parse(_accountService.GetUserId()))
+            throw new CustomException("You are not allowed to customize others questions");
         //questionEO.Category = _mapper.Map<CategoryEO>(_categoryService.GetLazyById(courseEO.CategoryId));
 
         await Task.Run( () => _unitOfWork.QuestionRepository.Update(questionEO));
@@ -85,9 +88,12 @@ public class QuestionService : IQuestionService
         if (count == 0)
             throw new InvalidOperationException("Question Not Found");
 
-        var qustionEO = _unitOfWork.QuestionRepository.Get(id);
+        var questionEO = _unitOfWork.QuestionRepository.Get(id);
 
-        _unitOfWork.QuestionRepository.Remove(qustionEO);
+        if (questionEO.OwnerId != Guid.Parse(_accountService.GetUserId()))
+            throw new CustomException("You are not allowed to delete others questions");
+
+        _unitOfWork.QuestionRepository.Remove(questionEO);
         _unitOfWork.SaveChanges();
     }
 

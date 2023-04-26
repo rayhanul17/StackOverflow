@@ -163,17 +163,30 @@ public class QuestionController : Controller
 
         return View(model);
     }
-    public IActionResult Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         try
         {
             var model = _scope.Resolve<QuestionModel>();
-            model.Delete(id);
+            await model.DeleteAsync(id);
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Successfully Deleted Question",
+                Message = "Successfully deleted question.",
                 Type = ResponseTypes.Success
+            });
+
+            return RedirectToAction("Index");
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
             });
         }
         catch (Exception ex)
