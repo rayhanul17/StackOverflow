@@ -14,7 +14,6 @@ public class QuestionService : IQuestionService
     private readonly ITimeService _timeService;
     private readonly IMapper _mapper;
     private readonly IAccountService _accountService;
-    private readonly Guid _userId;
 
     public QuestionService(IAccountService accountService,IApplicationUnitOfWork unitOfWork, ITimeService timeService, IMapper mapper)
     {
@@ -22,7 +21,7 @@ public class QuestionService : IQuestionService
         _mapper = mapper;
         _timeService = timeService;
         _accountService = accountService;
-        _userId = Guid.Parse(_accountService.GetUserId());
+
     }
 
     public async Task AddAsync(QuestionDto question)
@@ -41,6 +40,7 @@ public class QuestionService : IQuestionService
         ////entity.Answers = question.Answers;
 
         var questionEO = _mapper.Map<QuestionEO>(question);
+        questionEO.OwnerId = Guid.Parse(_accountService.GetUserId());
 
         _unitOfWork.QuestionRepository.Add(questionEO);
         _unitOfWork.SaveChanges();
@@ -48,17 +48,14 @@ public class QuestionService : IQuestionService
 
     public async Task<QuestionDto> GetByIdAsync(Guid id)
     {
-        var entity = await Task.Run(() => _unitOfWork.QuestionRepository.Get(id));
+        var count = _unitOfWork.QuestionRepository.Find(x => x.Id == id).Count();
 
-        if (entity is null)
+        if (count == 0)
             throw new CustomException("Question Not Found");
 
-        if (entity.OwnerId != _userId)
-            throw new CustomException("You are not allowed");
+        var questionEO = await Task.Run( () => _unitOfWork.QuestionRepository.Get(id));
 
-        //var questionEO = await Task.Run( () => _unitOfWork.QuestionRepository.Get(id));
-
-        return _mapper.Map<QuestionDto>(entity);
+        return _mapper.Map<QuestionDto>(questionEO);
     }
     public async Task DeleteAsync(Guid questionId)
     {
