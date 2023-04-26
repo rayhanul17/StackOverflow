@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StackOverflow.Web.Areas.Admin.Models;
+using StackOverflow.Web.Extensions;
 using StackOverflow.Web.Models;
 
 namespace StackOverflow.Web.Areas.Admin.Controllers;
@@ -27,8 +28,8 @@ public class QuestionController : Controller
     {
         var dataTableModel = new DataTablesAjaxRequestModel(Request);
         var model = _scope.Resolve<GetQuestionsModel>();
-        var list = await model.GetQuestionsAsync(dataTableModel);
-        return Json(list);
+
+        return Json(await model.GetQuestionsAsync(dataTableModel));
     }
 
     public IActionResult Ask()
@@ -66,19 +67,29 @@ public class QuestionController : Controller
     }
     public IActionResult Delete(Guid id)
     {
-        //try
-        //{
-        //    var model = _scope.Resolve<DeleteCourseModel>();
-        //    model.DeleteCourse(id);
+        try
+        {
+            var model = _scope.Resolve<QuestionModel>();
+            model.Delete(id);
 
-        //    ViewResponse("Category successfully deleted.", ResponseTypes.Success);
-        //}
-        //catch (Exception ex)
-        //{
-        //    _logger.LogError(ex, ex.Message);
-        //    ViewResponse(ex.Message, ResponseTypes.Error);
-        //}
-        return RedirectToAction("Index", "Question", new { Area = "Admin" });
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Successfully Deleted Course",
+                Type = ResponseTypes.Success
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Failed to Delete Course",
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index");
     }
 
     //[HttpPost]

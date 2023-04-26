@@ -15,4 +15,5 @@ public interface IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     void Merge(TEntity entity);
     void Update(TEntity entity);
     void Remove(TEntity entity);
+    void Remove(TKey id);
 }

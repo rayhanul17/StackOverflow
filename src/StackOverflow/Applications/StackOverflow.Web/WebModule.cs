@@ -12,6 +12,7 @@ public class WebModule : Module
         builder.RegisterType<RegisterModel>().AsSelf();
         builder.RegisterType<LogoutModel>().AsSelf();
         builder.RegisterType<QuestionModel>().AsSelf();
+        builder.RegisterType<AnswerModel>().AsSelf();
         builder.RegisterType<GetQuestionsModel>().AsSelf();
 
         base.Load(builder);

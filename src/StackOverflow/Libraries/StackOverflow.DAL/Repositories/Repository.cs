@@ -20,7 +20,7 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey> whe
         return _session.Get<TEntity>(id);
     }
 
-    public async virtual Task<(IList<TEntity> data, int total, int totalDisplay)> GetDynamicAsync(
+    public virtual async Task<(IList<TEntity> data, int total, int totalDisplay)> GetDynamicAsync(
         Expression<Func<TEntity, bool>> filter = null!, string orderBy = null!, int pageIndex = 1, int pageSize = 10)
     {
         IQueryable<TEntity> query = _session.Query<TEntity>();
@@ -35,15 +35,14 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey> whe
 
         if (orderBy != null)
         {
-            var result = query.OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            var result = await Task.Run( () => query.OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize));
             return (await result.ToListAsync(), total, totalDisplay);
         }
         else
         {
             var result = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            return (await result.ToListAsync(), total, totalDisplay);
+            return (result.ToList(), total, totalDisplay);
         }
-
     }
 
     public IEnumerable<TEntity> GetAll()
@@ -75,9 +74,15 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey> whe
     {
         _session.Delete(entity);
     }
+    public void Remove(TKey id)
+    {
+        var entityToDelete = _session.Get<TEntity>(id);
+        Remove(entityToDelete);
+    }
 
     public void Update(TEntity entity)
     {
         _session.SaveOrUpdate(entity);
     }
+
 }

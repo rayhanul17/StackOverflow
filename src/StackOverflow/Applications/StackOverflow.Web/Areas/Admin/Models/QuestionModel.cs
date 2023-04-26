@@ -33,7 +33,7 @@ public class QuestionModel : AdminBaseModel
         base.ResolveDependency(scope);
     }
 
-    public void Ask()
+    public async Task Ask()
     {
         Question question = new Question
         {
@@ -41,6 +41,11 @@ public class QuestionModel : AdminBaseModel
             VoteCount = VoteCount
         };
 
-        _questionService.AddAsync(question);
+        await _questionService.AddAsync(question);
+    }
+
+    public async Task Delete(Guid id)
+    {
+        await _questionService.DeleteAsync(id);    
     }
 }

@@ -27,6 +27,12 @@ public class ServiceModule : Module
         builder.RegisterType<QuestionRepository>().As<IQuestionRepository>()
             .InstancePerLifetimeScope();
 
+        builder.RegisterType<AnswerService>().As<IAnswerService>()
+            .InstancePerLifetimeScope();
+
+        builder.RegisterType<AnswerRepository>().As<IAnswerRepository>()
+            .InstancePerLifetimeScope();
+
         builder.RegisterType<AccountService>().As<IAccountService>()
             .InstancePerLifetimeScope();
 

@@ -33,14 +33,26 @@ public class QuestionService : IQuestionService
 
     public async Task DeleteAsync(Guid questionId)
     {
-        var count = _unitOfWork.QuestionRepository.Find(x => x.Id == questionId).Count();
-        var entity = _unitOfWork.QuestionRepository.Get(questionId);
-
-        _unitOfWork.QuestionRepository.Remove(entity);
+        _unitOfWork.QuestionRepository.Remove(questionId);
         _unitOfWork.SaveChanges();
     }
 
-    public async Task<(int total, int totalDisplay, IList<QuestionDto> records)> GetQuestionsAsync(int pageIndex,
+    public async Task UpdateAsync(QuestionDto obj)
+    {
+        var count = _unitOfWork.QuestionRepository.Find(x => x.Id != obj.Id &&
+                                                x.Title.ToLower() == obj.Title.ToLower()).Count();
+
+        if (count > 0)
+            throw new InvalidOperationException("Course with same name already exists");
+
+        var questionEO = _mapper.Map<QuestionEO>(obj);
+        //questionEO.Category = _mapper.Map<CategoryEO>(_categoryService.GetLazyById(courseEO.CategoryId));
+
+        await Task.Run( () => _unitOfWork.QuestionRepository.Update(questionEO));
+        _unitOfWork.SaveChanges();
+    }
+
+    public async Task<(int total, int totalDisplay, IList<QuestionDto> records)> GetQuestions(int pageIndex,
            int pageSize, string searchText, string orderBy)
     {
         var result = await _unitOfWork.QuestionRepository.GetDynamicAsync(x => x.Title.Contains(searchText), orderBy,
@@ -49,4 +61,5 @@ public class QuestionService : IQuestionService
         var questions = result.data.Select(x => _mapper.Map<QuestionDto>(x)).ToList();
         return (result.total, result.totalDisplay, questions);
     }
+
 }

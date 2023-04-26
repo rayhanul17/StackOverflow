@@ -5,7 +5,8 @@ namespace StackOverflow.DAL.UnitOfWorks;
 
 public interface IApplicationUnitOfWork : IUnitOfWork
 {
-    IQuestionRepository QuestionRepository { get; }
     IUserRoleRepository UserRoleRepository { get; }
     IRoleRepository RoleRepository { get; }
+    IQuestionRepository QuestionRepository { get; }
+    IAnswerRepository AnswerRepository { get; }
 }
