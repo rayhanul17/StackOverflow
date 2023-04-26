@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using StackOverflow.DAL.UnitOfWorks;
+using StackOverflow.Services.Services.Membership;
 using QuestionDto = StackOverflow.Services.DTOs.Question;
 using QuestionEO = StackOverflow.DAL.Entities.Question;
 
@@ -10,12 +12,14 @@ public class QuestionService : IQuestionService
     private readonly IApplicationUnitOfWork _unitOfWork;
     private readonly ITimeService _timeService;
     private readonly IMapper _mapper;
+    private readonly IAccountService _accountService;
 
-    public QuestionService(IApplicationUnitOfWork unitOfWork, ITimeService timeService, IMapper mapper)
+    public QuestionService(IAccountService accountService,IApplicationUnitOfWork unitOfWork, ITimeService timeService, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _timeService = timeService;
+        _accountService = accountService;
     }
 
     public async Task AddAsync(QuestionDto question)
@@ -25,6 +29,7 @@ public class QuestionService : IQuestionService
         entity.Title = question.Title;
         entity.VoteCount = question.VoteCount;
         entity.TimeStamp = _timeService.Now;
+        entity.OwnerId = Guid.Parse(_accountService.GetUserId());
         //entity.Answers = question.Answers;
 
         _unitOfWork.QuestionRepository.Add(entity);
