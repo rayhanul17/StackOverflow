@@ -11,6 +11,7 @@ public class QuestionMap : ClassMap<Question>
         Id(x => x.Id);
         Map(x => x.Title);
         Map(x => x.VoteCount);
-        Map(x => x.TimeStamp);        
+        Map(x => x.TimeStamp);  
+        Map(x => x.OwnerId);
     }
 }
