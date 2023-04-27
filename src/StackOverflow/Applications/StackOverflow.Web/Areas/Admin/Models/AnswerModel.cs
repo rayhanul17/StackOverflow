@@ -9,6 +9,7 @@ public class AnswerModel : AdminBaseModel
 {
     public Guid Id { get; set; }
     public string Description { get; set; } = string.Empty;   
+    public Guid QuestionId { get; set; }
 
     private IAnswerService _answerService;
     private ILifetimeScope _scope;
@@ -32,7 +33,7 @@ public class AnswerModel : AdminBaseModel
 
     public async Task Add()
     {
-        var answer = new Answer { Description = Description };
+        var answer = new Answer { Description = Description, QuestionId = QuestionId };
 
         await _answerService.AddAsync(answer);
     }

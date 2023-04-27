@@ -41,6 +41,7 @@ public class AnswerService : IAnswerService
 
         var answerEO = _mapper.Map<AnswerEO>(answer);
         answerEO.OwnerId = Guid.Parse(_accountService.GetUserId());
+        answerEO.TimeStamp = _timeService.Now;
 
         _unitOfWork.AnswerRepository.Add(answerEO);
         _unitOfWork.SaveChanges();

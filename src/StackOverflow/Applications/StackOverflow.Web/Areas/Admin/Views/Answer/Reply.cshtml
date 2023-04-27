@@ -16,6 +16,7 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <form role="form" method="post" asp-antiforgery="true" asp-action="Reply" asp-controller="Answer" asp-area="Admin">
+                    <input type="hidden" asp-for="QuestionId" />
                     <div class="card-body">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">

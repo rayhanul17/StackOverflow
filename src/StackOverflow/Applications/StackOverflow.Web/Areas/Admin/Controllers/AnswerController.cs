@@ -37,8 +37,11 @@ public class AnswerController : Controller
 
     public IActionResult Reply()
     {
+        var qid = Request.Path.ToString().Split('/').Last();
+
         _logger.LogInformation("You are in Admin/Reply\n");
         var model = _scope.Resolve<AnswerModel>();
+        model.QuestionId = Guid.Parse(qid);
 
         return View(model);
     }
@@ -97,7 +100,7 @@ public class AnswerController : Controller
             });
         }
 
-        return RedirectToAction("Index");
+        return RedirectToAction("Index", "Question", new{Area = "Admin"});
     }
 
     public IActionResult Edit(Guid id)
