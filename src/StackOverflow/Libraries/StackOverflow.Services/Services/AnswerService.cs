@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using StackOverflow.DAL.UnitOfWorks;
 using StackOverflow.Services.Exceptions;
 using StackOverflow.Services.Services.Membership;
+using System.Security.Cryptography;
 using AnswerDto = StackOverflow.Services.DTOs.Answer;
 using AnswerEO = StackOverflow.DAL.Entities.Answer;
 
@@ -90,10 +91,41 @@ public class AnswerService : IAnswerService
         _unitOfWork.SaveChanges();
     }
 
+    public async Task ApproveByIdAsync(Guid id)
+    {
+        var count = _unitOfWork.AnswerRepository.Find(x => x.Id == id).Count();
+
+        if (count == 0)
+            throw new InvalidOperationException("Answer Not Found");
+
+        var answerEO = _unitOfWork.AnswerRepository.Get(id);
+
+        answerEO.IsApproved = true;
+
+        _unitOfWork.SaveChanges();
+    }
+
     public async Task<(int total, int totalDisplay, IList<AnswerDto> records)> GetAnswers(int pageIndex,
            int pageSize, string searchText, string orderBy)
     {
-        var result = await _unitOfWork.AnswerRepository.GetDynamicAsync(x => x.Description.Contains(searchText), orderBy,
+        var result = await _unitOfWork.AnswerRepository.GetDynamicAsync(
+            x => x.Description.Contains(searchText),
+            orderBy,
+            pageIndex,
+            pageSize);
+
+        var answers = result.data.Select(x => _mapper.Map<AnswerDto>(x)).ToList();
+        return (result.total, result.totalDisplay, answers);
+    }
+
+    public async Task<(int total, int totalDisplay, IList<AnswerDto> records)> GetPendingAnswers(
+        Guid qid, int pageIndex, int pageSize, string searchText, string orderBy)
+    {
+        var result = await _unitOfWork.AnswerRepository.GetDynamicAsync(
+            x => x.Description.Contains(searchText)
+                && x.QuestionId.Equals(qid)
+                && x.IsApproved.Equals(false),
+            orderBy,
             pageIndex, pageSize);
 
         var answers = result.data.Select(x => _mapper.Map<AnswerDto>(x)).ToList();

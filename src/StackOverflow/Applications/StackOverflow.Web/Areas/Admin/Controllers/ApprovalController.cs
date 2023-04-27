@@ -40,146 +40,32 @@ public class ApprovalController : Controller
         return Json(await model.GetQuestionsByUserIdAsync(userId, dataTableModel));
     }
 
-    public IActionResult Ask()
+    public IActionResult Answer()
     {
-        _logger.LogInformation("You are in Admin/Ask\n");
-        var model = _scope.Resolve<QuestionModel>();
-
-        return View(model);
+        return View();
     }
-
-    [HttpPost]
-    public async Task<IActionResult> Ask(QuestionModel model)
+    public async Task<JsonResult> GetAnswers()
     {
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                model.ResolveDependency(_scope);
-                await model.Ask();
+        var id = HttpContext.Request.Headers.Referer.ToString().Split('/').Last();
+        var qid = new Guid(id);
 
-                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-                {
-                    Message = "Successfully added a new questions.",
-                    Type = ResponseTypes.Success
-                });
-            }
-            catch (CustomException ioe)
-            {
-                _logger.LogError(ioe, ioe.Message);
-                ModelState.AddModelError("", ioe.Message);
-                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-                {
-                    Message = ioe.Message,
-                    Type = ResponseTypes.Warning
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
+        var dataTableModel = new DataTablesAjaxRequestModel(Request);
+        var model = _scope.Resolve<GetAnswersModel>();
 
-                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-                {
-                    Message = "There was a problem in creating course.",
-                    Type = ResponseTypes.Danger
-                });
-            }
-        }
-        else
-        {
-            string messageText = string.Empty;
-            foreach (var message in ModelState.Values)
-            {
-                for (int i = 0; i < message.Errors.Count; i++)
-                {
-                    messageText += message.Errors[i].ErrorMessage;
-                }
-            }
-            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-            {
-                Message = messageText,
-                Type = ResponseTypes.Danger
-            });
-        }
-
-        return RedirectToAction("Index");
+        return Json(await model.GetPendingAnswersAsync(qid, dataTableModel));
     }
-
-    public async Task<IActionResult> Edit(Guid id)
-    {
-        var model = _scope.Resolve<QuestionEditModel>();
-
-        try
-        {
-            await model.GetQuestion(id);
-        }
-        catch(CustomException  ex)
-        {
-            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-            {
-                Message = ex.Message,
-                Type = ResponseTypes.Warning
-            });
-        }
-
-        return View(model);
-    }
-
-    [ValidateAntiForgeryToken, HttpPost]
-    public async Task<IActionResult> Edit(QuestionEditModel model)
-    {
-        if (ModelState.IsValid)
-        {
-            model.ResolveDependency(_scope);
-
-            try
-            {
-                await model.UpdateQuestionAsync();
-
-                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-                {
-                    Message = "Successfully updated question.",
-                    Type = ResponseTypes.Success
-                });
-
-                return RedirectToAction("Index");
-            }
-            catch (CustomException ioe)
-            {
-                _logger.LogError(ioe, ioe.Message);
-                ModelState.AddModelError("", ioe.Message);
-                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-                {
-                    Message = ioe.Message,
-                    Type = ResponseTypes.Warning
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-
-                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-                {
-                    Message = "There was a problem in updating question.",
-                    Type = ResponseTypes.Danger
-                });
-            }
-        }
-
-        return View(model);
-    }
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Approve(Guid id)
     {
         try
         {
-            var model = _scope.Resolve<QuestionModel>();
-            await model.DeleteAsync(id);
+            var model = _scope.Resolve<AnswerModel>();
+            await model.ApproveAsync(id);
 
-            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-            {
-                Message = "Successfully deleted question.",
-                Type = ResponseTypes.Success
-            });
+            //TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            //{
+            //    Message = "Successfully deleted question.",
+            //    Type = ResponseTypes.Success
+            //});
 
             return RedirectToAction("Index");
         }
@@ -200,33 +86,12 @@ public class ApprovalController : Controller
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Failed to Delete Question",
+                Message = "Failed to approve answer",
                 Type = ResponseTypes.Danger
             });
         }
 
         return RedirectToAction("Index");
-    }
-
-    public async Task<IActionResult> Details(Guid id)
-    {
-        var s = Request.Path;
-        var model = _scope.Resolve<QuestionEditModel>();
-
-        try
-        {
-            await model.GetQuestion(id);
-        }
-        catch (CustomException ex)
-        {
-            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
-            {
-                Message = ex.Message,
-                Type = ResponseTypes.Warning
-            });
-        }
-
-        return View(model);
     }
 
 }
