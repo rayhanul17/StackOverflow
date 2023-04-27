@@ -32,10 +32,7 @@ public class QuestionModel : AdminBaseModel
 
     public async Task Ask()
     {
-        Question question = new Question
-        {
-            Title = Title,            
-        };
+        var question = new Question { Title = Title };
 
         await _questionService.AddAsync(question);
     }

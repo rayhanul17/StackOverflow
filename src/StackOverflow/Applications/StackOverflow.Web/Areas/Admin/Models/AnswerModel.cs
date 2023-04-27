@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using StackOverflow.Services.DTOs;
 using StackOverflow.Services.Services;
 
@@ -7,9 +8,8 @@ namespace StackOverflow.Web.Areas.Admin.Models;
 public class AnswerModel : AdminBaseModel
 {
     public Guid Id { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public DateTime TimeStamp { get; set; }
-    public int VoteCount { get; set; }
+    public string Description { get; set; } = string.Empty;   
+    public Guid QuestionId { get; set; }
 
     private IAnswerService _answerService;
     private ILifetimeScope _scope;
@@ -31,13 +31,15 @@ public class AnswerModel : AdminBaseModel
         base.ResolveDependency(scope);
     }
 
-    public void Ask()
+    public async Task Add()
     {
-        var question = new Answer()
-        {
-            Description = Description
-        };
+        var answer = new Answer { Description = Description, QuestionId = QuestionId };
 
-        _answerService.AddAsync(question);
+        await _answerService.AddAsync(answer);
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await _answerService.RemoveByIdAsync(id);    
     }
 }

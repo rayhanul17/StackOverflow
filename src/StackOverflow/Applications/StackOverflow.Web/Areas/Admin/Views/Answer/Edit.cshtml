@@ -1,6 +1,6 @@
-﻿@model QuestionEditModel
+﻿@model AnswerEditModel
 @{
-    ViewData["Title"] = "Question Edit";
+    ViewData["Title"] = "Answer Edit";
 }
 
 <div class="container-fluid">
@@ -10,21 +10,23 @@
             <!-- general form elements -->
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">@Html.Raw(Model.Title)</h3>
+                    <h3 class="card-title">@ViewData["Title"]</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="post" asp-antiforgery="true" asp-action="Edit" asp-controller="Question" asp-area="Admin">
+                <form role="form" method="post" asp-antiforgery="true" asp-action="Edit" asp-controller="Answer" asp-area="Admin">
                     <input type="hidden" asp-for="Id" />
                     <input type="hidden" asp-for="OwnerId" />
-                    <input type="hidden" asp-for="VoteCount" />
                     <input type="hidden" asp-for="TimeStamp" />
+                    <input type="hidden" asp-for="VoteCount" />
+                    <input type="hidden" asp-for="IsApproved" />
+                    <input type="hidden" asp-for="QuestionId" />
                     <div class="card-body">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
-                            <label asp-for="Title">Question Tittle</label>
-                            <input type="text" class="form-control" asp-for="Title" placeholder=@ViewData["Title"]>
-                            <span asp-validation-for="Title" class="text-danger"></span>
+                            <label asp-for="Description">Question Tittle</label>
+                            <input type="text" class="form-control" asp-for="Description" placeholder=@ViewData["Title"]>
+                            <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -42,5 +44,3 @@
 
     <partial name="_ValidationScriptsPartial" />
 }
-
-

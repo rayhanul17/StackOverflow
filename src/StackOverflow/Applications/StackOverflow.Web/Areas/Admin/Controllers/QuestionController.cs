@@ -100,13 +100,13 @@ public class QuestionController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         var model = _scope.Resolve<QuestionEditModel>();
 
         try
         {
-            model.GetQuestion(id);
+            await model.GetQuestion(id);
         }
         catch(CustomException  ex)
         {
@@ -129,7 +129,7 @@ public class QuestionController : Controller
 
             try
             {
-                await model.UpdateCourseAsync();
+                await model.UpdateQuestionAsync();
 
                 TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
                 {
@@ -203,9 +203,25 @@ public class QuestionController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Details()
+    public async Task<IActionResult> Details(Guid id)
     {
-        return View();
+        var s = Request.Path;
+        var model = _scope.Resolve<QuestionEditModel>();
+
+        try
+        {
+            await model.GetQuestion(id);
+        }
+        catch (CustomException ex)
+        {
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ex.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+
+        return View(model);
     }
 
 }

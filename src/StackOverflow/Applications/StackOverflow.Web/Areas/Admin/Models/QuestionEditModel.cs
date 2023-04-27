@@ -38,7 +38,7 @@ public class QuestionEditModel : AdminBaseModel
         base.ResolveDependency(scope);
     }
 
-    public async void GetQuestion(Guid id)
+    public async Task GetQuestion(Guid id)
     {
         var question = await _questionService.GetByIdAsync(id);
 
@@ -48,9 +48,9 @@ public class QuestionEditModel : AdminBaseModel
         }
     }
 
-    public async Task UpdateCourseAsync()
+    public async Task UpdateQuestionAsync()
     { 
-        var course = _mapper.Map<Question>(this);
-        await _questionService.UpdateAsync(course);
+        var question = _mapper.Map<Question>(this);
+        await _questionService.UpdateAsync(question);
     }
 }

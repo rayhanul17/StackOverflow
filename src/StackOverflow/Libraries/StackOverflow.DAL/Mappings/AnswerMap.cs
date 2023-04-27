@@ -14,5 +14,6 @@ public class AnswerMap : ClassMap<Answer>
         Map(x => x.TimeStamp);
         Map(x => x.QuestionId);
         Map(x => x.OwnerId);
+        Map(x => x.IsApproved);
     }
 }

@@ -1,10 +1,15 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using StackOverflow.Services.Exceptions;
 using StackOverflow.Web.Areas.Admin.Models;
+using StackOverflow.Web.Extensions;
+using StackOverflow.Web.Models;
 
 namespace StackOverflow.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
+[Area("Admin"), Authorize]
 public class AnswerController : Controller
 {
     private readonly ILogger<AnswerController> _logger;
@@ -15,35 +20,199 @@ public class AnswerController : Controller
         _logger = logger;
         _scope = scope;
     }
+
+    [AllowAnonymous]
     public IActionResult Index()
     {
         return View();
     }
 
+    [HttpGet, AllowAnonymous]
+    public async Task<JsonResult> GetAnswers()
+    {
+        var dataTableModel = new DataTablesAjaxRequestModel(Request);
+        var model = _scope.Resolve<GetAnswersModel>();
+
+        var id = HttpContext.Request.Headers.Referer.ToString().Split('/').Last();
+        var qid = new Guid(id);
+
+        return Json(await model.GetAnswersAsyncByQuestion(qid, dataTableModel));
+    }
+
     public IActionResult Reply()
     {
-        _logger.LogInformation("You are in Admin/Anser/Reply\n");
+        var qid = Request.Path.ToString().Split('/').Last();
+
+        _logger.LogInformation("You are in Admin/Reply\n");
         var model = _scope.Resolve<AnswerModel>();
+        model.QuestionId = Guid.Parse(qid);
 
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult Reply(AnswerModel model)
+    public async Task<IActionResult> Reply(AnswerModel model)
     {
-        try
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            try
             {
                 model.ResolveDependency(_scope);
-                model.Ask();
+                await model.Add();
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "Successfully replied.",
+                    Type = ResponseTypes.Success
+                });
+            }
+            catch (CustomException ioe)
+            {
+                _logger.LogError(ioe, ioe.Message);
+                ModelState.AddModelError("", ioe.Message);
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = ioe.Message,
+                    Type = ResponseTypes.Warning
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "There was a problem in creating course.",
+                    Type = ResponseTypes.Danger
+                });
             }
         }
-        catch (Exception ex)
+        else
         {
-            _logger.LogError($"Exception Message: {ex.Message}\nException: {ex}\n\n");
+            string messageText = string.Empty;
+            foreach (var message in ModelState.Values)
+            {
+                for (int i = 0; i < message.Errors.Count; i++)
+                {
+                    messageText += message.Errors[i].ErrorMessage;
+                }
+            }
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = messageText,
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index", "Question", new{Area = "Admin"});
+    }
+
+    public IActionResult Edit(Guid id)
+    {
+        var model = _scope.Resolve<AnswerEditModel>();
+
+        try
+        {
+            model.GetAnswer(id);
+        }
+        catch(CustomException  ex)
+        {
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ex.Message,
+                Type = ResponseTypes.Warning
+            });
         }
 
         return View(model);
     }
+
+    [ValidateAntiForgeryToken, HttpPost]
+    public async Task<IActionResult> Edit(AnswerEditModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            model.ResolveDependency(_scope);
+
+            try
+            {
+                await model.UpdateAnswerAsync();
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "Successfully updated answer.",
+                    Type = ResponseTypes.Success
+                });
+
+                return RedirectToAction("Index", "Question", new {Area = "Admin"});
+            }
+            catch (CustomException ioe)
+            {
+                _logger.LogError(ioe, ioe.Message);
+                ModelState.AddModelError("", ioe.Message);
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = ioe.Message,
+                    Type = ResponseTypes.Warning
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+
+                TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+                {
+                    Message = "There was a problem in updating answer.",
+                    Type = ResponseTypes.Danger
+                });
+            }
+        }
+
+        return View(model);
+    }
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            var model = _scope.Resolve<AnswerModel>();
+            await model.DeleteAsync(id);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Successfully deleted answer.",
+                Type = ResponseTypes.Success
+            });
+
+            return RedirectToAction("Index", "Question", new { Area = "Admin" });
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Failed to delete answer",
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index", "Question", new {Area = "Admin"});
+    }
+
+    public IActionResult Details()
+    {
+        return View();
+    }
+
 }
