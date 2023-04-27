@@ -28,15 +28,13 @@ public class AnswerController : Controller
     }
 
     [HttpGet, AllowAnonymous]
-    public async Task<JsonResult> GetAnswers(Guid id)
+    public async Task<JsonResult> GetAnswers()
     {
-        //var ans = _scope.Resolve<AnswerEditModel>();
-        //ans.GetAnswer(id);
         var dataTableModel = new DataTablesAjaxRequestModel(Request);
         var model = _scope.Resolve<GetAnswersModel>();
 
-        //var id = Request.PathBase.ToString();
-        var qid = new Guid("029ea521-1199-469c-97b0-aff00144145f");
+        var id = HttpContext.Request.Headers.Referer.ToString().Split('/').Last();
+        var qid = new Guid(id);
 
         return Json(await model.GetAnswersAsyncByQuestion(qid, dataTableModel));
     }
@@ -185,7 +183,7 @@ public class AnswerController : Controller
                 Type = ResponseTypes.Success
             });
 
-            return RedirectToAction("GetAnswers");
+            return RedirectToAction("Index", "Question", new { Area = "Admin" });
         }
 
         catch (CustomException ioe)
@@ -209,7 +207,7 @@ public class AnswerController : Controller
             });
         }
 
-        return RedirectToAction("GetAnswers");
+        return RedirectToAction("Index", "Question", new {Area = "Admin"});
     }
 
     public IActionResult Details()
