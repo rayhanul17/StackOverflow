@@ -103,10 +103,15 @@ public class AnswerService : IAnswerService
     public async Task<(int total, int totalDisplay, IList<AnswerDto> records)> GetAnswersByQuestion(Guid qid, int pageIndex,
            int pageSize, string searchText, string orderBy)
     {
-        var result = await _unitOfWork.AnswerRepository.GetDynamicAsync(x => x.Description.Contains(searchText), orderBy,
-            pageIndex, pageSize);
+        var result = await _unitOfWork.AnswerRepository.GetDynamicAsync(
+            x => x.Description.Contains(searchText) 
+                && x.QuestionId.Equals(qid)
+                && x.IsApproved.Equals(true), 
+            orderBy,
+            pageIndex,
+            pageSize);
 
-        var answers = result.data.Where(x => x.QuestionId.Equals(qid)).Select(x => _mapper.Map<AnswerDto>(x)).ToList();
+        var answers = result.data.Select(x => _mapper.Map<AnswerDto>(x)).ToList();
         return (result.total, result.totalDisplay, answers);
     }
 }

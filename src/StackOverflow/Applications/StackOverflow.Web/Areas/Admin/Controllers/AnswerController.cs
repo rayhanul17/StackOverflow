@@ -144,7 +144,7 @@ public class AnswerController : Controller
                     Type = ResponseTypes.Success
                 });
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Question", new {Area = "Admin"});
             }
             catch (CustomException ioe)
             {

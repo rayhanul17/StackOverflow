@@ -8,5 +8,6 @@ public class Answer
     public int VoteCount { get; set; }
     public DateTime TimeStamp { get; set; }
     public bool IsApproved { get; set; }
+    public Guid OwnerId { get; set; }
 
 }

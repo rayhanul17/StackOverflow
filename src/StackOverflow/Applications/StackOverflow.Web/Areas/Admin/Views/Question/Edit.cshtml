@@ -17,6 +17,7 @@
                 <form role="form" method="post" asp-antiforgery="true" asp-action="Edit" asp-controller="Question" asp-area="Admin">
                     <input type="hidden" asp-for="Id" />
                     <input type="hidden" asp-for="OwnerId" />
+                    <input type="hidden" asp-for="VoteCount" />
                     <input type="hidden" asp-for="TimeStamp" />
                     <div class="card-body">
                         <div asp-validation-summary="All" class="text-danger"></div>

@@ -100,13 +100,13 @@ public class QuestionController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         var model = _scope.Resolve<QuestionEditModel>();
 
         try
         {
-            model.GetQuestion(id);
+            await model.GetQuestion(id);
         }
         catch(CustomException  ex)
         {
