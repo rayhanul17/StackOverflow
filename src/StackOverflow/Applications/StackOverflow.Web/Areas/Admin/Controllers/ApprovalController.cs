@@ -9,12 +9,12 @@ using StackOverflow.Web.Models;
 namespace StackOverflow.Web.Areas.Admin.Controllers;
 
 [Area("Admin"), Authorize]
-public class QuestionController : Controller
+public class ApprovalController : Controller
 {
-    private readonly ILogger<QuestionController> _logger;
+    private readonly ILogger<ApprovalController> _logger;
     private readonly ILifetimeScope _scope;
 
-    public QuestionController(ILogger<QuestionController> logger, ILifetimeScope scope)
+    public ApprovalController(ILogger<ApprovalController> logger, ILifetimeScope scope)
     {
         _logger = logger;
         _scope = scope;
