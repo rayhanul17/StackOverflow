@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StackOverflow.Services.Exceptions;
+using StackOverflow.Services.Services.Membership;
 using StackOverflow.Web.Areas.Admin.Models;
 using StackOverflow.Web.Extensions;
 using StackOverflow.Web.Models;
@@ -13,11 +14,13 @@ public class ApprovalController : Controller
 {
     private readonly ILogger<ApprovalController> _logger;
     private readonly ILifetimeScope _scope;
+    private readonly IAccountService _accountService;
 
-    public ApprovalController(ILogger<ApprovalController> logger, ILifetimeScope scope)
+    public ApprovalController(ILogger<ApprovalController> logger, ILifetimeScope scope, IAccountService accountService)
     {
         _logger = logger;
         _scope = scope;
+        _accountService = accountService;
     }
 
     [AllowAnonymous]
@@ -29,10 +32,12 @@ public class ApprovalController : Controller
     [HttpGet, AllowAnonymous]
     public async Task<JsonResult> GetQuestions()
     {
+        var userId = Guid.Parse(_accountService.GetUserId());
+
         var dataTableModel = new DataTablesAjaxRequestModel(Request);
         var model = _scope.Resolve<GetQuestionsModel>();
 
-        return Json(await model.GetQuestionsAsync(dataTableModel));
+        return Json(await model.GetQuestionsByUserIdAsync(userId, dataTableModel));
     }
 
     public IActionResult Ask()

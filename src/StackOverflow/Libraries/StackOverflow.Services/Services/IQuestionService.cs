@@ -11,4 +11,6 @@ public interface IQuestionService
     Task DeleteAsync(Guid questionId);
     Task<(int total, int totalDisplay, IList<Question> records)> GetQuestions(int pageIndex,
             int pageSize, string searchText, string orderBy);
+    Task<(int total, int totalDisplay, IList<Question> records)> GetQuestionsByUserId(Guid id, int pageIndex,
+            int pageSize, string searchText, string orderBy);
 }
