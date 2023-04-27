@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using StackOverflow.Services.Exceptions;
 using StackOverflow.Web.Areas.Admin.Models;
@@ -27,12 +28,17 @@ public class AnswerController : Controller
     }
 
     [HttpGet, AllowAnonymous]
-    public async Task<JsonResult> GetAnswers()
-    {        
+    public async Task<JsonResult> GetAnswers(Guid id)
+    {
+        //var ans = _scope.Resolve<AnswerEditModel>();
+        //ans.GetAnswer(id);
         var dataTableModel = new DataTablesAjaxRequestModel(Request);
         var model = _scope.Resolve<GetAnswersModel>();
 
-        return Json(await model.GetAnswersAsync(dataTableModel));
+        //var id = Request.PathBase.ToString();
+        var qid = new Guid("029ea521-1199-469c-97b0-aff00144145f");
+
+        return Json(await model.GetAnswersAsyncByQuestion(qid, dataTableModel));
     }
 
     public IActionResult Reply()

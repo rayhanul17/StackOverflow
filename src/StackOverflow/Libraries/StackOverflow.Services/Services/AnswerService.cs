@@ -31,14 +31,6 @@ public class AnswerService : IAnswerService
         if (count > 0)
             throw new CustomException("You already give a response like this");
 
-        //var entity = new QuestionEO();
-        //entity.Id = question.Id;
-        //entity.Title = question.Title;
-        //entity.VoteCount = question.VoteCount;
-        //entity.TimeStamp = _timeService.Now;
-        //entity.OwnerId = Guid.Parse(_accountService.GetUserId());
-        ////entity.Answers = question.Answers;
-
         var answerEO = _mapper.Map<AnswerEO>(answer);
         answerEO.OwnerId = Guid.Parse(_accountService.GetUserId());
         answerEO.TimeStamp = _timeService.Now;
@@ -105,6 +97,16 @@ public class AnswerService : IAnswerService
             pageIndex, pageSize);
 
         var answers = result.data.Select(x => _mapper.Map<AnswerDto>(x)).ToList();
+        return (result.total, result.totalDisplay, answers);
+    }
+
+    public async Task<(int total, int totalDisplay, IList<AnswerDto> records)> GetAnswersByQuestion(Guid qid, int pageIndex,
+           int pageSize, string searchText, string orderBy)
+    {
+        var result = await _unitOfWork.AnswerRepository.GetDynamicAsync(x => x.Description.Contains(searchText), orderBy,
+            pageIndex, pageSize);
+
+        var answers = result.data.Where(x => x.QuestionId.Equals(qid)).Select(x => _mapper.Map<AnswerDto>(x)).ToList();
         return (result.total, result.totalDisplay, answers);
     }
 }
