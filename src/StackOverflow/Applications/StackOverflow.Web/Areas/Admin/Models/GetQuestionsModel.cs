@@ -36,5 +36,30 @@ namespace StackOverflow.Web.Areas.Admin.Models
                     ).ToArray()
             };
         }
+
+        public async Task<object?> GetQuestionsByUserIdAsync(Guid id, DataTablesAjaxRequestModel model)
+        {
+            var data = await _questionService?.GetQuestionsByUserId(
+                id,
+                model.PageIndex,
+                model.PageSize,
+                model.SearchText,
+                model.GetSortText(new string[] { "Title", "VoteCount", "TimeStamp" }));
+
+            return new
+            {
+                recordsTotal = data.total,
+                recordsFiltered = data.totalDisplay,
+                data = (from record in data.records
+                        select new string[]
+                        {
+                            record.Title,
+                            record.VoteCount.ToString(),
+                            record.TimeStamp.ToString(),
+                            record.Id.ToString()
+                        }
+                    ).ToArray()
+            };
+        }
     }
 }

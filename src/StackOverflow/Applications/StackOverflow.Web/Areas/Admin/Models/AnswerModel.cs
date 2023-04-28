@@ -42,4 +42,9 @@ public class AnswerModel : AdminBaseModel
     {
         await _answerService.RemoveByIdAsync(id);    
     }
+
+    public async Task ApproveAsync(Guid id)
+    {
+        await _answerService.ApproveByIdAsync(id);
+    }
 }

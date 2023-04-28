@@ -108,4 +108,18 @@ public class QuestionService : IQuestionService
         var questions = result.data.Select(x => _mapper.Map<QuestionDto>(x)).ToList();
         return (result.total, result.totalDisplay, questions);
     }
+
+    public async Task<(int total, int totalDisplay, IList<QuestionDto> records)> GetQuestionsByUserId(Guid userId, int pageIndex,
+           int pageSize, string searchText, string orderBy)
+    {
+        var result = await _unitOfWork.QuestionRepository.GetDynamicAsync(
+            x => x.Title.Contains(searchText) 
+                && x.OwnerId.Equals(userId),
+            orderBy,
+            pageIndex,
+            pageSize);
+
+        var questions = result.data.Select(x => _mapper.Map<QuestionDto>(x)).ToList();
+        return (result.total, result.totalDisplay, questions);
+    }
 }

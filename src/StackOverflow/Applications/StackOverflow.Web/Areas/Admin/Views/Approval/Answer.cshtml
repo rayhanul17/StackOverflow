@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model QuestionEditModel
+
+@{
+    ViewData["Title"] = "QA";
+    var question = TempData["Student"] as QuestionEditModel;
+}
+
+@section Styles
+    {
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+}
+<div>
+    <form>
+        <input asp-for="Id" />
+    </form>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">DataTable with default features</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="ans" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>VoteCount</th>
+                            <th>TimeStamp</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Description</th>
+                            <th>VoteCount</th>
+                            <th>TimeStamp</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
+<partial name="_ModalPartial" />
+
+@section Scripts
+    {
+    <!-- DataTables -->
+    <script src="~/admin/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+
+    <script>
+        $(function () {
+            $('#ans').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/admin/approval/getanswers"
+                },
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": 3,
+                        "render": function (data, type, row) {
+                            return `<button type="submit" class="btn btn-success btn-sm show-bs-modal" data-id='${data}' value='${data}'>
+                                                        <i class="fas fa-file">
+                                                        </i>
+                                                        Approve
+                                                    </button>`;
+                        }
+                    }
+                ]
+            });
+
+            $('#ans').on('click', '.show-bs-modal', function (event) {
+                var id = $(this).data("id");
+                var modal = $("#modal-default");
+                modal.find('.modal-title').text('Approve');
+                modal.find('.modal-body p').text('Are you sure you want to approve this answer?');
+                $("#deleteId").val(id);
+                $("#deleteForm").attr("action", "/admin/approval/approve");
+                modal.modal('show');
+            });
+
+            $("#deleteButton").click(function () {
+                $("#deleteForm").submit();
+            });
+
+        });
+    </script>
+}
+
