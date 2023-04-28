@@ -203,6 +203,7 @@ public class QuestionController : Controller
         return RedirectToAction("Index");
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Details(Guid id)
     {
         //var s = Request.Path;        
