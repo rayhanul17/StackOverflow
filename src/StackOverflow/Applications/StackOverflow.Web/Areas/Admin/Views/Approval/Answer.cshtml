@@ -71,10 +71,10 @@
                         "orderable": false,
                         "targets": 3,
                         "render": function (data, type, row) {
-                            return `<button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
-                                                        <i class="fas fa-trash">
+                            return `<button type="submit" class="btn btn-success btn-sm show-bs-modal" data-id='${data}' value='${data}'>
+                                                        <i class="fas fa-file">
                                                         </i>
-                                                        Delete
+                                                        Approve
                                                     </button>`;
                         }
                     }
@@ -84,6 +84,7 @@
             $('#ans').on('click', '.show-bs-modal', function (event) {
                 var id = $(this).data("id");
                 var modal = $("#modal-default");
+                modal.find('.modal-title').text('Approve');
                 modal.find('.modal-body p').text('Are you sure you want to approve this answer?');
                 $("#deleteId").val(id);
                 $("#deleteForm").attr("action", "/admin/approval/approve");
