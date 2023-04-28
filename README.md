@@ -13,7 +13,7 @@
 3. MSSQL Server.
 4. Fluent NHibernate.
 5. Log4Net.
-6. 3 Layers architecture ( Presentation, Services, Data Access Layer )
+6. 3 Layers architecture ( Presentation, Services, Data Access Layer ).
 
 ## Installation
 1. Clone the repository.
