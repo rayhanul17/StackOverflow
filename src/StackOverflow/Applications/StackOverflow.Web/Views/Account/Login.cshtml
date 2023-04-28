@@ -30,13 +30,12 @@
                                 <input class="form-check-input" asp-for="RememberMe" />
                                 <span class="form-check-label"> Remember </span>
                             </label>
-                            <input hidden asp-for="ReturnUrl" />
-                            <a asp-action="ForgotPassword" class="text-decoration-none">Forgot password</a>
+                            <input hidden asp-for="ReturnUrl" />                            
                         </div> <!-- col end.// -->
 
                         <button class="btn btn-primary w-100" type="submit"> Sign in </button>
                     </form>
-                    <p class="mb-0 mt-4 text-center">Don’t have an account? <a asp-action="Register">Sign Up</a></p>
+                    <p class="mb-0 mt-4 text-center">Don’t have an account? <a asp-action="Register"> Sign Up</a></p>
                 </div> <!-- card-body end.// -->
             </div> <!-- card end.// -->
         </div>
