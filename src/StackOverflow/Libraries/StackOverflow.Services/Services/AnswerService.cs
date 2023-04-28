@@ -91,6 +91,32 @@ public class AnswerService : IAnswerService
         _unitOfWork.SaveChanges();
     }
 
+    public async Task VoteUpAsync(Guid id)
+    {
+        var count = _unitOfWork.AnswerRepository.Find(x => x.Id == id).Count();
+
+        if (count == 0)
+            throw new InvalidOperationException("Question Not Found");
+
+        var questionEO = _unitOfWork.AnswerRepository.Get(id);
+
+        questionEO.VoteCount++;
+        _unitOfWork.SaveChanges();
+    }
+
+    public async Task VoteDownAsync(Guid id)
+    {
+        var count = _unitOfWork.AnswerRepository.Find(x => x.Id == id).Count();
+
+        if (count == 0)
+            throw new InvalidOperationException("Question Not Found");
+
+        var questionEO = _unitOfWork.AnswerRepository.Get(id);
+
+        questionEO.VoteCount--;
+        _unitOfWork.SaveChanges();
+    }
+
     public async Task ApproveByIdAsync(Guid id)
     {
         var count = _unitOfWork.AnswerRepository.Find(x => x.Id == id).Count();

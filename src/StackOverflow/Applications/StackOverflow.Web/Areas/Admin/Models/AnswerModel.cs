@@ -47,4 +47,14 @@ public class AnswerModel : AdminBaseModel
     {
         await _answerService.ApproveByIdAsync(id);
     }
+
+    public async Task VoteUpAsync(Guid id)
+    {
+        await _answerService.VoteUpAsync(id);
+    }
+
+    public async Task VoteDownAsync(Guid id)
+    {
+        await _answerService.VoteDownAsync(id);
+    }
 }

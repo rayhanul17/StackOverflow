@@ -76,10 +76,15 @@
                                                 </i>
                                                 Edit
                                             </button>
-                                            <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/answer/details/${data}'" value='${data}'>
-                                                <i class="fas fa-info">
+                                            <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/answer/voteup/${data}'" value='${data}'>
+                                                <i class="fas fa-thumbs-up">
                                                 </i>
-                                                Details
+                                                Vote Up
+                                            </button>
+                                            <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/answer/votedown/${data}'" value='${data}'>
+                                                <i class="fas fa-thumbs-down">
+                                                </i>
+                                                Vote Down
                                             </button>
                                             <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
                                                 <i class="fas fa-trash">
