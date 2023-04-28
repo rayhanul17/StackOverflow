@@ -205,12 +205,35 @@ public class QuestionController : Controller
 
     public async Task<IActionResult> Details(Guid id)
     {
-        var s = Request.Path;
+        //var s = Request.Path;        
+        
         var model = _scope.Resolve<QuestionEditModel>();
 
         try
         {
             await model.GetQuestion(id);
+        }
+        catch (CustomException ex)
+        {
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ex.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+
+        return View(model);
+    }
+
+    public async Task<IActionResult> RefDetails(Guid id)
+    {
+        var qid = new Guid(HttpContext.Request.Headers.Referer.ToString().Split('/').Last());
+
+        var model = _scope.Resolve<QuestionEditModel>();
+
+        try
+        {
+            await model.GetQuestion(qid);
         }
         catch (CustomException ex)
         {

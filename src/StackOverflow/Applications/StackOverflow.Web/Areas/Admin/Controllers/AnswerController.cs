@@ -217,20 +217,26 @@ public class AnswerController : Controller
 
     public async Task<IActionResult> VoteUp(Guid id)
     {
-        var qid = Request.Path.ToString().Split('/').Last();
-        
+
+        var qid = new Guid(HttpContext.Request.Headers.Referer.ToString().Split('/').Last());
+
         try
         {
             var model = _scope.Resolve<AnswerModel>();
-            await model.VoteUpAsync(new Guid(qid));
+            await model.VoteUpAsync(id);
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
                 Message = "Successfully vote up this question.",
                 Type = ResponseTypes.Success
             });
-            
-            return RedirectToAction("Details", "Question", new {Area="Admin"});
+            RouteValueDictionary rv = new RouteValueDictionary()
+            {
+                {
+                    "id", qid
+                }
+            };
+            return RedirectToAction("Index", "Question", new { Area = "Admin" });
         }
 
         catch (CustomException ioe)
