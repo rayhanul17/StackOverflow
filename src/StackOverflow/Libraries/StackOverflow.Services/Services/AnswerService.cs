@@ -30,7 +30,7 @@ public class AnswerService : IAnswerService
         var count = _unitOfWork.AnswerRepository.Find(x => x.Description.ToLower() == answer.Description.ToLower()).Count();
 
         if (count > 0)
-            throw new CustomException("You already give a response like this");
+            throw new CustomException("You already gave an answer like this");
 
         var answerEO = _mapper.Map<AnswerEO>(answer);
         answerEO.OwnerId = Guid.Parse(_accountService.GetUserId());
