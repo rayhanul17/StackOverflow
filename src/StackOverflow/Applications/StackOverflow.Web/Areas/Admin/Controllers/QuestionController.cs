@@ -224,4 +224,43 @@ public class QuestionController : Controller
         return View(model);
     }
 
+    public async Task<IActionResult> VoteUp(Guid id)
+    {
+        try
+        {
+            var model = _scope.Resolve<QuestionModel>();
+            await model.VoteUpAsync(id);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Successfully vote up this question.",
+                Type = ResponseTypes.Success
+            });
+
+            return RedirectToAction("Index");
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Failed to vote this question",
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index");
+    }
 }

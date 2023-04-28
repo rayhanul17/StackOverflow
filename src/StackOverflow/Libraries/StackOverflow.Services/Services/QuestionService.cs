@@ -99,6 +99,19 @@ public class QuestionService : IQuestionService
         _unitOfWork.SaveChanges();
     }
 
+    public async Task VoteUpAsync(Guid id)
+    {
+        var count = _unitOfWork.QuestionRepository.Find(x => x.Id == id).Count();
+
+        if (count == 0)
+            throw new InvalidOperationException("Question Not Found");
+
+        var questionEO = _unitOfWork.QuestionRepository.Get(id);
+
+        questionEO.VoteCount++;
+        _unitOfWork.SaveChanges();
+    }
+
     public async Task<(int total, int totalDisplay, IList<QuestionDto> records)> GetQuestions(int pageIndex,
            int pageSize, string searchText, string orderBy)
     {
