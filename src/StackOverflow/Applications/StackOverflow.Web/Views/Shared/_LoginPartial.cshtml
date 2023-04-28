@@ -6,17 +6,19 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>                    
+        <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" }) class="nav-link">
+            <button type="submit" style="background-color:rgba(0,0,0,0); border-color:rgba(0,0,0,0); border-style:none; color:white">
+                <i class="nav-icon fas fa-user"></i>
                 Logout
-        </a>
+            </button>
+        </form>
     </li>
 }
 else
 {
     <li class="nav-item">
         <a asp-action="Login" asp-controller="Account" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
+            <i class="nav-icon fas fa-user"></i>
                 Login
         </a>
     </li>

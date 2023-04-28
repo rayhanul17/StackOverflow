@@ -12,16 +12,11 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="~/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 }
-<div>
-    <form>
-        <input asp-for="Id" />
-    </form>
-</div>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">DataTable with default features</h3>
+                <h3 class="card-title">Answers of a specific question need for your approval.</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -29,7 +24,7 @@
                     <thead>
                         <tr>
                             <th>Description</th>
-                            <th>VoteCount</th>
+                            <th>Vote Count</th>
                             <th>TimeStamp</th>
                             <th>Actions</th>
                         </tr>
@@ -37,7 +32,7 @@
                     <tfoot>
                         <tr>
                             <th>Description</th>
-                            <th>VoteCount</th>
+                            <th>Vote Count</th>
                             <th>TimeStamp</th>
                             <th>Actions</th>
                         </tr>
@@ -72,7 +67,7 @@
                         "targets": 3,
                         "render": function (data, type, row) {
                             return `<button type="submit" class="btn btn-success btn-sm show-bs-modal" data-id='${data}' value='${data}'>
-                                                        <i class="fas fa-file">
+                                                        <i class="fas fa-check">
                                                         </i>
                                                         Approve
                                                     </button>`;

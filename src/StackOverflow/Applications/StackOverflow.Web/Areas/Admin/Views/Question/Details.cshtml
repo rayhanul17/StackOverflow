@@ -2,26 +2,20 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @model QuestionEditModel
 
-@{
-    ViewData["Title"] = "QA";
-    var question = TempData["Student"] as QuestionEditModel;
-}
 
 @section Styles
     {
     <!-- DataTables -->
     <link rel="stylesheet" href="~/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 }
+
 <div>
-   <form>
-       <input asp-for="Id" />
-   </form>
 </div>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">DataTable with default features</h3>
+                <h3 class="card-title">Answers of a specific question...</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -29,16 +23,16 @@
                     <thead>
                         <tr>
                             <th>Description</th>
-                            <th>VoteCount</th>
-                            <th>TimeStamp</th>
+                            <th>Vote Count</th>
+                            <th>Time Stamp</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Description</th>
-                            <th>VoteCount</th>
-                            <th>TimeStamp</th>
+                            <th>Vote Count</th>
+                            <th>Time Stamp</th>
                             <th>Actions</th>
                         </tr>
                     </tfoot>
@@ -71,24 +65,18 @@
                         "orderable": false,
                         "targets": 3,
                         "render": function (data, type, row) {
-                            return `<button type="submit" class="btn btn-primary btn-sm" onclick="window.location.href='/admin/answer/edit/${data}'" value='${data}'>
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
+                            return `<button type="submit" class="btn btn-success btn-sm" onclick="window.location.href='/admin/answer/voteup/${data}'" value='${data}'>
+                                                <i class="fas fa-thumbs-up"></i>
+                                            </button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="window.location.href='/admin/answer/votedown/${data}'" value='${data}'>
+                                                <i class="fas fa-thumbs-down"></i>
+                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-sm" onclick="window.location.href='/admin/answer/edit/${data}'" value='${data}'>
+                                                <i class="fas fa-pencil-alt"></i>
                                                 Edit
-                                            </button>
-                                            <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/answer/voteup/${data}'" value='${data}'>
-                                                <i class="fas fa-thumbs-up">
-                                                </i>
-                                                Vote Up
-                                            </button>
-                                            <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/answer/votedown/${data}'" value='${data}'>
-                                                <i class="fas fa-thumbs-down">
-                                                </i>
-                                                Vote Down
-                                            </button>
+                                            </button>                                            
                                             <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
-                                                <i class="fas fa-trash">
-                                                </i>
+                                                <i class="fas fa-trash"></i>
                                                 Delete
                                             </button>`;
                         }
@@ -112,4 +100,3 @@
         });
     </script>
 }
-
