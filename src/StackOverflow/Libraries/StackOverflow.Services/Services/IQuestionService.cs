@@ -8,6 +8,7 @@ public interface IQuestionService
     Task<Question> GetByIdAsync(Guid id);
     Task RemoveByIdAsync(Guid id);
     Task VoteUpAsync(Guid id);
+    Task VoteDownAsync(Guid id);
     Task UpdateAsync(Question question);
     Task DeleteAsync(Guid questionId);
     Task<(int total, int totalDisplay, IList<Question> records)> GetQuestions(int pageIndex,
