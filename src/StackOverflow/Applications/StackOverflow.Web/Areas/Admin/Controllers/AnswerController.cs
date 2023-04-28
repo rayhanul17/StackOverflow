@@ -215,4 +215,92 @@ public class AnswerController : Controller
         return View();
     }
 
+    public async Task<IActionResult> VoteUp(Guid id)
+    {
+
+        var qid = new Guid(HttpContext.Request.Headers.Referer.ToString().Split('/').Last());
+
+        try
+        {
+            var model = _scope.Resolve<AnswerModel>();
+            await model.VoteUpAsync(id);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Successfully vote up this question.",
+                Type = ResponseTypes.Success
+            });
+            RouteValueDictionary rv = new RouteValueDictionary()
+            {
+                {
+                    "id", qid
+                }
+            };
+            return RedirectToAction("Index", "Question", new { Area = "Admin" });
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Failed to vote this question",
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index", "Question", new { Area = "Admin"});
+    }
+
+    public async Task<IActionResult> VoteDown(Guid id)
+    {
+        try
+        {
+            var model = _scope.Resolve<AnswerModel>();
+            await model.VoteDownAsync(id);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Successfully vote down this question.",
+                Type = ResponseTypes.Success
+            });
+
+            return RedirectToAction("Index", "Question", new {Area = "Admin"});
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Failed to vote this question",
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index");
+    }
+
 }

@@ -41,4 +41,14 @@ public class QuestionModel : AdminBaseModel
     {
         await _questionService.RemoveByIdAsync(id);    
     }
+
+    public async Task VoteUpAsync(Guid id)
+    {
+        await _questionService.VoteUpAsync(id);
+    }
+
+    public async Task VoteDownAsync(Guid id)
+    {
+        await _questionService.VoteDownAsync(id);
+    }
 }

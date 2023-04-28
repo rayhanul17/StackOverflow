@@ -7,6 +7,8 @@ public interface IAnswerService
     Task AddAsync(Answer question);
     Task<Answer> GetByIdAsync(Guid id);
     Task RemoveByIdAsync(Guid id);
+    Task VoteUpAsync(Guid id);
+    Task VoteDownAsync(Guid id);
     Task ApproveByIdAsync(Guid id);
     Task UpdateAsync(Answer question);
     Task DeleteAsync(Guid questionId);

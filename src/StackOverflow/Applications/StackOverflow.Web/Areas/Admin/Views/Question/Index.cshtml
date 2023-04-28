@@ -80,6 +80,16 @@
                                         </i>
                                         Reply
                                     </button>
+                                    <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/question/voteup/${data}'" value='${data}'>
+                                        <i class="fas fa-thumbs-up">
+                                        </i>
+                                        Vote Up
+                                    </button>
+                                    <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/question/votedown/${data}'" value='${data}'>
+                                        <i class="fas fa-thumbs-down">
+                                        </i>
+                                        Vote Down
+                                    </button>
                                     <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
                                         <i class="fas fa-trash">
                                         </i>

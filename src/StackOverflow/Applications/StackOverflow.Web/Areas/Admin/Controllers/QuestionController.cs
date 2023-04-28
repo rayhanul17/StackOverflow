@@ -205,7 +205,8 @@ public class QuestionController : Controller
 
     public async Task<IActionResult> Details(Guid id)
     {
-        var s = Request.Path;
+        //var s = Request.Path;        
+        
         var model = _scope.Resolve<QuestionEditModel>();
 
         try
@@ -224,4 +225,105 @@ public class QuestionController : Controller
         return View(model);
     }
 
+    public async Task<IActionResult> RefDetails(Guid id)
+    {
+        var qid = new Guid(HttpContext.Request.Headers.Referer.ToString().Split('/').Last());
+
+        var model = _scope.Resolve<QuestionEditModel>();
+
+        try
+        {
+            await model.GetQuestion(qid);
+        }
+        catch (CustomException ex)
+        {
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ex.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+
+        return View(model);
+    }
+
+    public async Task<IActionResult> VoteUp(Guid id)
+    {
+        try
+        {
+            var model = _scope.Resolve<QuestionModel>();
+            await model.VoteUpAsync(id);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Successfully vote up this question.",
+                Type = ResponseTypes.Success
+            });
+
+            return RedirectToAction("Index");
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Failed to vote this question",
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> VoteDown(Guid id)
+    {
+        try
+        {
+            var model = _scope.Resolve<QuestionModel>();
+            await model.VoteDownAsync(id);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Successfully vote down this question.",
+                Type = ResponseTypes.Success
+            });
+
+            return RedirectToAction("Index");
+        }
+
+        catch (CustomException ioe)
+        {
+            _logger.LogError(ioe, ioe.Message);
+            ModelState.AddModelError("", ioe.Message);
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = ioe.Message,
+                Type = ResponseTypes.Warning
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
+            {
+                Message = "Failed to vote this question",
+                Type = ResponseTypes.Danger
+            });
+        }
+
+        return RedirectToAction("Index");
+    }
 }
