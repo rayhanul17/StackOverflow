@@ -27,7 +27,7 @@ public class AnswerService : IAnswerService
 
     public async Task AddAsync(AnswerDto answer)
     {
-        var count = _unitOfWork.AnswerRepository.Find(x => x.Description.ToLower() == answer.Description.ToLower()).Count();
+        var count = _unitOfWork.AnswerRepository.Find(x => x.Description.ToLower() == answer.Description.ToLower() && x.QuestionId == answer.QuestionId).Count();
 
         if (count > 0)
             throw new CustomException("You already gave an answer like this");
