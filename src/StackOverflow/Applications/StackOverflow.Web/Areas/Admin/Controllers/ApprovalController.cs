@@ -23,13 +23,11 @@ public class ApprovalController : Controller
         _accountService = accountService;
     }
 
-    [AllowAnonymous]
     public IActionResult Index()
     {
         return View();
     }
 
-    [HttpGet, AllowAnonymous]
     public async Task<JsonResult> GetQuestions()
     {
         var userId = Guid.Parse(_accountService.GetUserId());
