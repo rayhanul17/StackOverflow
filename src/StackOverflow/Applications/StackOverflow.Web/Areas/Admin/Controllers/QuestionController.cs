@@ -257,7 +257,7 @@ public class QuestionController : Controller
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Successfully vote up this question.",
+                Message = "Successfully vote up to question.",
                 Type = ResponseTypes.Success
             });
 
@@ -280,7 +280,7 @@ public class QuestionController : Controller
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Failed to vote this question",
+                Message = "Failed to vote to question",
                 Type = ResponseTypes.Danger
             });
         }
@@ -297,7 +297,7 @@ public class QuestionController : Controller
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Successfully vote down this question.",
+                Message = "Successfully vote down to question.",
                 Type = ResponseTypes.Success
             });
 
@@ -320,7 +320,7 @@ public class QuestionController : Controller
 
             TempData.Put<ResponseModel>("ResponseMessage", new ResponseModel
             {
-                Message = "Failed to vote this question",
+                Message = "Failed to vote to question",
                 Type = ResponseTypes.Danger
             });
         }

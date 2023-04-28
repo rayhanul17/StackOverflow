@@ -65,34 +65,26 @@
                         "orderable": false,
                         "targets": 3,
                         "render": function (data, type, row) {
-                            return `<button type="submit" class="btn btn-primary btn-sm" onclick="window.location.href='/admin/question/edit/${data}'" value='${data}'>
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
+                            return `<button type="submit" class="btn btn-success btn-sm" onclick="window.location.href='/admin/question/voteup/${data}'" value='${data}'>
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="window.location.href='/admin/question/votedown/${data}'" value='${data}'>
+                                        <i class="fas fa-thumbs-down"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-sm" onclick="window.location.href='/admin/question/edit/${data}'" value='${data}'>
+                                        <i class="fas fa-pencil-alt"></i>
                                         Edit
                                     </button>
                                     <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/question/details/${data}'" value='${data}'>
-                                        <i class="fas fa-info">
-                                        </i>
+                                        <i class="fas fa-info"></i>
                                         Details
                                     </button>
                                     <button type="submit" class="btn btn-secondary btn-sm" onclick="window.location.href='/admin/answer/reply/${data}'" value='${data}'>
-                                        <i class="fas fa-reply">
-                                        </i>
+                                        <i class="fas fa-reply"></i>
                                         Reply
-                                    </button>
-                                    <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/question/voteup/${data}'" value='${data}'>
-                                        <i class="fas fa-thumbs-up">
-                                        </i>
-                                        Vote Up
-                                    </button>
-                                    <button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/question/votedown/${data}'" value='${data}'>
-                                        <i class="fas fa-thumbs-down">
-                                        </i>
-                                        Vote Down
-                                    </button>
+                                    </button>                                    
                                     <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
-                                        <i class="fas fa-trash">
-                                        </i>
+                                        <i class="fas fa-trash"></i>
                                         Delete
                                     </button>`;
                         }
@@ -116,4 +108,3 @@
         });
     </script>
 }
-
