@@ -36,6 +36,12 @@ public class AnswerService : IAnswerService
         answerEO.OwnerId = Guid.Parse(_accountService.GetUserId());
         answerEO.TimeStamp = _timeService.Now;
 
+        var questionEO = _unitOfWork.QuestionRepository.Get(answerEO.QuestionId);
+        if(questionEO != null && questionEO.OwnerId == answerEO.OwnerId)
+        {
+            answerEO.IsApproved = true;
+        }
+
         _unitOfWork.AnswerRepository.Add(answerEO);
         _unitOfWork.SaveChanges();
     }
